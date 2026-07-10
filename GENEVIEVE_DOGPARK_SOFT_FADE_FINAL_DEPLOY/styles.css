@@ -1,0 +1,2720 @@
+
+:root {
+  --deep: #042d1b;
+  --deep2: #064329;
+  --kelly: #00a651;
+  --kellyDark: #007a3d;
+  --lime: #99e600;
+  --sunburst: #ffe100;
+  --amber: #ff9500;
+  --fire: #f10b0b;
+  --blue: #2985c7;
+  --purple: #3b0764;
+  --pink: #e84a8a;
+  --black: #000000;
+  --panel: #ffffff;
+  --soft: #eef8f1;
+  --soft2: #dff5e7;
+  --line: #2f7247;
+  --lineSoft: rgba(47, 114, 71, .24);
+  --text: #071d12;
+  --muted: #365144;
+  --shadow: 0 12px 32px rgba(4,45,27,0.14);
+  --radius: 22px;
+  --tap: 48px;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(0,166,81,.20), transparent 32rem),
+    linear-gradient(180deg, #c7efd4 0%, #f7fff9 42%, #ffffff 100%);
+  color: var(--text);
+}
+
+.app-shell {
+  width: min(100%, 1360px);
+  margin: 0 auto;
+  min-height: 100vh;
+  background: linear-gradient(180deg, rgba(234,249,238,.94), #ffffff 54%);
+  border-left: 0;
+  border-right: 0;
+  padding-bottom: calc(24px + env(safe-area-inset-bottom));
+}
+
+.topbar {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  padding: max(18px, env(safe-area-inset-top)) 16px 16px;
+  background: linear-gradient(135deg, #a9e5bc, #f8fff9 78%);
+  border-bottom: 4px solid var(--deep);
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 11px;
+  font-weight: 950;
+  margin: 0 0 8px;
+  color: #20382b;
+}
+
+h1, h2, h3 { color: var(--deep); line-height: 1.12; }
+h1 { font-size: clamp(30px, 9vw, 58px); margin: 0; font-weight: 950; letter-spacing: -0.04em; }
+h2 { font-size: clamp(21px, 5vw, 32px); margin: 0 0 10px; }
+h3 { font-size: 19px; margin: 0 0 8px; }
+
+p { line-height: 1.5; }
+
+.status-pill {
+  justify-self: start;
+  border: 3px solid var(--kellyDark);
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-weight: 950;
+  background: var(--kelly);
+  color: #ffffff;
+  max-width: 100%;
+  font-size: 13px;
+}
+
+.tabs {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  padding: 10px 12px;
+  background: rgba(255,255,255,.96);
+  backdrop-filter: blur(12px);
+  border-bottom: 3px solid var(--deep);
+  scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
+
+.tabs button {
+  flex: 0 0 auto;
+  min-height: 42px;
+  padding: 10px 13px;
+  border-radius: 999px;
+  white-space: nowrap;
+  font-size: 13px;
+}
+
+.mobileQuickActions {
+  position: sticky;
+  top: 64px;
+  z-index: 25;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  padding: 8px 10px;
+  background: rgba(239,250,243,.96);
+  border-bottom: 1px solid var(--lineSoft);
+  backdrop-filter: blur(10px);
+}
+
+.mobileQuickActions button {
+  min-height: 42px;
+  font-size: 12px;
+  padding: 8px 7px;
+  border-radius: 14px;
+}
+
+button {
+  border: 0;
+  border-radius: 15px;
+  min-height: var(--tap);
+  padding: 12px 15px;
+  background: var(--kelly);
+  color: #ffffff;
+  font-weight: 950;
+  cursor: pointer;
+  margin: 2px;
+  font-size: 15px;
+  touch-action: manipulation;
+  box-shadow: 0 2px 0 rgba(0,0,0,.08);
+}
+button:hover { filter: brightness(0.96); }
+button:active { transform: translateY(1px); }
+button.active, .secondary { background: var(--deep); color: #ffffff; }
+button.danger { background: var(--fire); color: #ffffff; }
+
+main {
+  padding: 12px;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.mobileScreenGuide {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  background: #ffffff;
+  border: 1.5px solid var(--lineSoft);
+  border-left: 7px solid var(--kelly);
+  border-radius: 18px;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 18px rgba(4,45,27,.08);
+  font-size: 13px;
+}
+.mobileScreenGuide span { color: var(--muted); font-weight: 750; }
+
+.screen { display: none; }
+.screen.active { display: block; animation: fadeIn .18s ease-out; }
+
+@keyframes fadeIn {
+  from { opacity: .7; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card {
+  background: rgba(255,255,255,.97);
+  border: 1.5px solid var(--lineSoft);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 16px;
+  margin-bottom: 14px;
+  overflow: hidden;
+}
+
+.hero {
+  background:
+    linear-gradient(135deg, rgba(0,166,81,.14), rgba(255,255,255,.98) 70%);
+  border: 2px solid rgba(0,166,81,.32);
+}
+
+.homeCard { background: #ebfff1; border-color: var(--kelly); }
+.softGreen { background: linear-gradient(180deg, #eaf8ef, #ffffff); border-color: rgba(0,166,81,.45); }
+.danger { background: #fff0f0; border-color: rgba(241,11,11,.42); }
+.sun { background: #fffbe6; border-color: var(--sunburst); }
+.blue { background: linear-gradient(180deg, #c8f7f7, #ffffff); border-color: #66d9e8; }
+.purple { background: #f3e8ff; border-color: var(--purple); }
+.dogfriendly { background: linear-gradient(180deg, #f2ffe0, #ffffff); border-color: var(--lime); }
+
+.hero-actions, .quick, .toolbar {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  align-items: stretch;
+  margin-top: 10px;
+}
+
+.hero-actions button, .toolbar button {
+  width: 100%;
+}
+
+.mobileDashboardStrip {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.mobileDashboardStrip button {
+  min-height: 46px;
+  border-radius: 16px;
+}
+
+.grid { display: grid; gap: 12px; }
+.two, .three { grid-template-columns: 1fr; }
+
+.pricing-grid, .alert-demo-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+label {
+  display: block;
+  margin: 12px 0;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 950;
+  color: #20382b;
+}
+
+input, select, textarea {
+  width: 100%;
+  display: block;
+  margin-top: 7px;
+  border: 1.8px solid rgba(47,114,71,.56);
+  border-radius: 16px;
+  min-height: var(--tap);
+  padding: 13px 14px;
+  font-size: 16px;
+  background: #ffffff;
+  color: var(--text);
+  font-weight: 750;
+  outline: none;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: var(--kelly);
+  box-shadow: 0 0 0 4px rgba(0,166,81,.14);
+}
+textarea { min-height: 124px; resize: vertical; }
+
+.mobileHint {
+  display: block;
+  background: #fffbe6;
+  border: 1.5px solid var(--sunburst);
+  padding: 10px;
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.toggle-grid { display: grid; grid-template-columns: 1fr; gap: 8px; margin: 14px 0; }
+
+.toggle {
+  display: grid;
+  grid-template-columns: 26px 1fr;
+  gap: 10px;
+  align-items: center;
+  border: 1.5px solid rgba(47,114,71,.35);
+  padding: 12px;
+  border-radius: 16px;
+  background: #ffffff;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 14px;
+  min-height: var(--tap);
+}
+.toggle input { width: 22px; height: 22px; margin: 0; }
+
+.park-card, .dog-card, .report-card {
+  border-left: 8px solid var(--kelly);
+}
+
+.meta, .chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 10px 0;
+}
+
+.chip, .moduleBadge {
+  display: inline-flex;
+  align-items: center;
+  border: 1.5px solid rgba(47,114,71,.48);
+  background: #ffffff;
+  color: var(--deep);
+  border-radius: 999px;
+  padding: 7px 10px;
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1.15;
+}
+a.chip { text-decoration: none; color: var(--deep); }
+
+.note, .answer, .warning {
+  border-radius: 16px;
+  padding: 12px;
+  font-weight: 850;
+  background: #fffbe6;
+  border: 2px solid var(--sunburst);
+}
+
+.warning {
+  background: #ffe6e6;
+  border-color: var(--fire);
+  color: #8a0000;
+}
+
+.result, .signal {
+  border-radius: 17px;
+  padding: 14px;
+  font-weight: 950;
+  margin: 10px 0;
+  word-break: break-word;
+}
+
+.green {
+  background: var(--kelly);
+  border: 3px solid #006b35;
+  color: #ffffff;
+}
+.yellow {
+  background: var(--sunburst);
+  border: 3px solid #b39b00;
+  color: #111111;
+}
+.amber {
+  background: var(--amber);
+  border: 3px solid #a84e00;
+  color: #111111;
+}
+.red {
+  background: var(--fire);
+  border: 3px solid #970000;
+  color: #ffffff;
+}
+.black {
+  background: #000000;
+  border: 3px solid #000000;
+  color: #ffffff;
+}
+
+.alert-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.barWrap {
+  height: 12px;
+  background: #d9e7dd;
+  border-radius: 999px;
+  overflow: hidden;
+  margin: 9px 0 6px;
+  border: 1px solid rgba(4,45,27,.25);
+}
+.bar { height: 100%; border-radius: 999px; }
+
+.g { background: var(--kelly); }
+.y { background: var(--sunburst); }
+.a { background: var(--amber); }
+.r { background: var(--fire); }
+.k { background: #000000; }
+.b { background: var(--blue); }
+.lime { background: var(--lime); }
+.p { background: var(--purple); }
+
+.riskLabel { font-weight: 950; font-size: 13px; margin-top: 6px; }
+
+.score {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 950;
+  border: 4px solid var(--kelly);
+  background: #effff4;
+  color: var(--deep);
+  flex: 0 0 58px;
+}
+.score.y { border-color: var(--sunburst); background: #fffbe6; color: #111111; }
+.score.r { border-color: var(--fire); background: #ffe6e6; color: #b00000; }
+.amberScore { border-color: var(--amber); background: #fff0dc; color: #8a3f00; }
+.blackScore { border-color: #000000; background: #000000; color: #ffffff; }
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.status {
+  padding: 12px;
+  border: 1.5px solid rgba(47,114,71,.35);
+  border-radius: 16px;
+  background: #ffffff;
+  margin-top: 8px;
+}
+
+.mini {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.55;
+  font-weight: 750;
+}
+
+.emergencyBlack {
+  background: #000000;
+  color: #ffffff;
+  border-color: #000000;
+}
+
+.flash { animation: flash 1s infinite; }
+@keyframes flash {
+  50% {
+    box-shadow: 0 0 0 8px rgba(241, 11, 11, .24);
+    background: #ffb3b3;
+  }
+}
+
+.config-row, .timelineItem {
+  border: 1.5px solid rgba(47,114,71,.35);
+  background: #ffffff;
+  border-radius: 17px;
+  padding: 13px;
+  margin: 9px 0;
+  overflow-wrap: anywhere;
+}
+
+.codebox {
+  background: #071d12;
+  color: #eaffef;
+  border-radius: 14px;
+  padding: 12px;
+  overflow-x: auto;
+  font-family: Consolas, Monaco, monospace;
+  font-size: 13px;
+}
+
+.small-muted {
+  color: #315141;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.price { font-size: 38px; font-weight: 1000; color: var(--deep); }
+.price small { display: block; font-size: 14px; color: #315141; }
+
+.checklist { list-style: none; padding-left: 0; line-height: 1.75; }
+
+.empty {
+  padding: 16px;
+  border: 2px dashed rgba(47,114,71,.55);
+  border-radius: 18px;
+  color: #20382b;
+  background: #ffffff;
+  font-weight: 850;
+}
+
+.mateHere {
+  background: var(--kelly);
+  border: 3px solid #006b35;
+  color: #ffffff;
+}
+.mateMissing {
+  background: var(--sunburst);
+  border: 3px solid #b39b00;
+  color: #111111;
+}
+.timeline { border-left: 5px solid var(--kelly); padding-left: 12px; }
+.searchHighlight { background: #fffbe6; border-color: var(--sunburst); }
+
+footer {
+  padding: 18px 16px calc(18px + env(safe-area-inset-bottom));
+  color: #20382b;
+  border-top: 4px solid var(--deep);
+  font-size: 12px;
+  font-weight: 850;
+  background: #ffffff;
+}
+
+/* Tablet */
+@media (min-width: 700px) {
+  main { padding: 16px; }
+  .topbar {
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    padding: 24px;
+  }
+  .hero-actions, .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .hero-actions button, .toolbar button { width: auto; }
+  .mobileDashboardStrip { grid-template-columns: repeat(4, 1fr); }
+  .two { grid-template-columns: minmax(310px, 430px) 1fr; }
+  .three { grid-template-columns: repeat(3, 1fr); }
+  .pricing-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .alert-demo-grid, .alert-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* Desktop */
+@media (min-width: 1020px) {
+  .app-shell {
+    border-left: 6px solid var(--deep);
+    border-right: 6px solid var(--deep);
+  }
+  .tabs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(108px, 1fr));
+    overflow: visible;
+  }
+  .tabs button {
+    white-space: normal;
+    min-height: 48px;
+  }
+  .mobileQuickActions {
+    display: none;
+  }
+  .mobileScreenGuide {
+    display: none;
+  }
+  .card { padding: 20px; }
+  .pricing-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .alert-demo-grid, .alert-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+}
+
+/* Very small phones */
+@media (max-width: 380px) {
+  main { padding: 9px; }
+  .card { padding: 13px; border-radius: 18px; }
+  .mobileQuickActions {
+    grid-template-columns: repeat(2, 1fr);
+    position: static;
+  }
+  .tabs { top: 0; }
+  h1 { font-size: 30px; }
+  button { font-size: 14px; }
+}
+
+/* Print / handover */
+@media print {
+  .tabs, .mobileQuickActions, button { display: none !important; }
+  .screen { display: block !important; }
+  .card { box-shadow: none; break-inside: avoid; }
+}
+
+
+/* CLEAN_SECTIONS_GREEN_FINAL_PATCH */
+:root {
+  --greenFade1: #bfeccf;
+  --greenFade2: #e6f8ec;
+  --greenFade3: #ffffff;
+}
+body {
+  background: linear-gradient(180deg, var(--greenFade1) 0%, var(--greenFade2) 38%, var(--greenFade3) 82%) !important;
+}
+.app-shell {
+  background: linear-gradient(180deg, rgba(214,245,224,.94) 0%, rgba(244,252,247,.96) 48%, #ffffff 100%) !important;
+}
+.topbar {
+  background: linear-gradient(135deg, #9ddfb5 0%, #eaf8ef 62%, #ffffff 100%) !important;
+}
+.card { box-shadow: 0 8px 22px rgba(4,45,27,0.09) !important; }
+.modeBlock {
+  background: #f7fff9;
+  border: 1.5px solid rgba(0,166,81,.32);
+  border-radius: 18px;
+  padding: 12px;
+  margin: 12px 0;
+}
+.filterDrawer {
+  border: 1.5px solid rgba(47,114,71,.30);
+  border-radius: 18px;
+  background: #ffffff;
+  padding: 10px 12px;
+  margin: 12px 0;
+}
+.filterDrawer summary {
+  cursor: pointer;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  font-weight: 950;
+  color: var(--deep);
+}
+.greyHero {
+  background: linear-gradient(135deg, #ecfff2 0%, #ffffff 78%) !important;
+  border-color: var(--kelly) !important;
+}
+.deletePanel {
+  margin-top: 14px;
+  padding: 13px;
+  border: 2px solid rgba(241,11,11,.25);
+  border-radius: 18px;
+  background: #fff7f7;
+}
+.deletePanel button { width: 100%; margin-top: 7px; }
+@media (min-width: 700px) { .deletePanel button { width: auto; } }
+
+
+/* COUNCIL_ETIQUETTE_FINAL_PATCH */
+.councilHero {
+  background: linear-gradient(135deg, #e9fff1 0%, #ffffff 74%) !important;
+  border-color: var(--kelly) !important;
+}
+.etiquetteGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 9px;
+}
+.etiquetteGrid button {
+  width: 100%;
+  text-align: left;
+  min-height: 54px;
+  white-space: normal;
+  line-height: 1.25;
+}
+.etiquetteGrid.good button {
+  background: var(--kelly);
+}
+.etiquetteGrid.break button {
+  background: var(--fire);
+}
+.councilEvidence {
+  background: linear-gradient(180deg, #f4fff7, #ffffff) !important;
+  border-color: rgba(0,166,81,.36) !important;
+}
+.etiquetteLogItem {
+  border-left: 7px solid var(--kelly);
+}
+.etiquetteLogItem.red,
+.etiquetteLogItem.amber {
+  border-left-color: var(--fire);
+}
+@media (min-width: 700px) {
+  .etiquetteGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+
+/* PREVENTATIVE_RISK_ENGINE_FINAL_PATCH */
+.suitabilityCard{border-left:8px solid var(--amber)}.suitabilityCard.green{border-left-color:var(--kelly)}.suitabilityCard.red{border-left-color:var(--fire)}.suitabilityCard.black{border-left-color:#000}.hazardExpired{opacity:.62;filter:grayscale(.3)}.timerActive{border:3px solid var(--amber);background:#fffbe6}.timerExpired{border:3px solid var(--fire);background:#ffe6e6;color:#8a0000}.medicalSummary{background:#fff;border:2px solid rgba(47,114,71,.35);border-radius:16px;padding:12px;margin-top:10px}.auditPill{display:inline-flex;padding:6px 9px;border-radius:999px;background:#fff;border:1.5px solid rgba(47,114,71,.35);margin:3px;font-size:12px;font-weight:900}
+
+
+/* AUSTRALIAN_GUIDELINES_FINAL_PATCH */
+.auHero {
+  background: linear-gradient(135deg, #e9fff1 0%, #ffffff 74%) !important;
+  border-color: var(--kelly) !important;
+}
+#controlsForm textarea {
+  min-height: 84px;
+}
+.guidelineBadge {
+  display: inline-flex;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1.5px solid rgba(47,114,71,.35);
+  background: #fff;
+  font-size: 12px;
+  font-weight: 900;
+  margin: 3px;
+}
+.staleWarning {
+  background: #fffbe6 !important;
+  border: 3px solid var(--sunburst) !important;
+  color: #111 !important;
+}
+.controlPlan {
+  border-left: 8px solid var(--kelly);
+}
+.controlPlan.warn {
+  border-left-color: var(--amber);
+}
+.controlPlan.red {
+  border-left-color: var(--fire);
+}
+
+
+/* CALM_GOV_TM_LAYOUT_FINAL_PATCH */
+:root {
+  --genevieve-border: #042d1b;
+  --genevieve-green-fade-top: #bfeccf;
+  --genevieve-green-fade-mid: #e6f8ec;
+  --genevieve-green-fade-bottom: #ffffff;
+}
+body {
+  background: linear-gradient(180deg, var(--genevieve-green-fade-top) 0%, var(--genevieve-green-fade-mid) 42%, var(--genevieve-green-fade-bottom) 92%) !important;
+}
+.app-shell {
+  border-left: 6px solid var(--genevieve-border) !important;
+  border-right: 6px solid var(--genevieve-border) !important;
+  background: linear-gradient(180deg, rgba(224,248,232,.96), rgba(255,255,255,.99) 72%) !important;
+  padding-bottom: calc(96px + env(safe-area-inset-bottom)) !important;
+}
+.calmTopTabs {
+  display: flex !important;
+  overflow-x: auto !important;
+  gap: 8px !important;
+}
+.calmTopTabs button {
+  min-width: max-content !important;
+  white-space: nowrap !important;
+}
+.bottomNav {
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: min(100%, 1360px);
+  z-index: 100;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 4px;
+  padding: 8px 8px calc(8px + env(safe-area-inset-bottom));
+  background: rgba(255,255,255,.96);
+  border-top: 3px solid var(--genevieve-border);
+  backdrop-filter: blur(14px);
+}
+.bottomNav button {
+  min-height: 46px;
+  border-radius: 15px;
+  padding: 8px 5px;
+  font-size: 12px;
+  background: #042d1b;
+}
+.calmScreen .card { margin-bottom: 18px !important; }
+.calmHero {
+  border: 2px solid rgba(4,45,27,.35) !important;
+  background: linear-gradient(135deg, rgba(0,166,81,.12), #ffffff 76%) !important;
+}
+.todayAnswer {
+  border-radius: 22px;
+  padding: 18px;
+  margin: 16px 0;
+  font-size: 18px;
+  line-height: 1.45;
+  border: 3px solid rgba(4,45,27,.22);
+}
+.todayAnswer.green { background: #00a651; color: #fff; border-color: #006b35; }
+.todayAnswer.yellow { background: #ffe100; color: #111; border-color: #b39b00; }
+.todayAnswer.amber { background: #ff9500; color: #111; border-color: #a84e00; }
+.todayAnswer.red { background: #f10b0b; color: #fff; border-color: #970000; }
+.todayAnswer.black { background: #000; color: #fff; border-color: #000; }
+.primaryAction {
+  width: 100%;
+  min-height: 56px;
+  font-size: 16px;
+  border-radius: 18px;
+}
+.quietLinkButton {
+  width: 100%;
+  background: transparent !important;
+  color: #042d1b !important;
+  box-shadow: none !important;
+  text-decoration: underline;
+}
+.quietMenu {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+.quietMenu button {
+  width: 100%;
+  background: #fff;
+  color: #042d1b;
+  border: 2px solid rgba(4,45,27,.22);
+  box-shadow: none;
+  text-align: left;
+}
+details.card,
+.calmAccordion {
+  padding: 0 !important;
+}
+details.card > summary,
+.calmAccordion > summary,
+details > summary {
+  cursor: pointer;
+  min-height: 52px;
+  padding: 14px 16px;
+  font-weight: 950;
+  color: #042d1b;
+}
+details.card > *:not(summary),
+.calmAccordion > *:not(summary) {
+  margin-left: 16px;
+  margin-right: 16px;
+}
+details.card > :last-child,
+.calmAccordion > :last-child { margin-bottom: 16px; }
+.progressiveDogForm .formStep,
+.progressiveDogForm details.formStep {
+  display: block;
+  border: 1.5px solid rgba(4,45,27,.18);
+  border-radius: 18px;
+  background: #ffffff;
+  padding: 14px;
+  margin: 14px 0;
+}
+.progressiveDogForm details.formStep summary {
+  padding: 0;
+  min-height: 42px;
+}
+.trademarkNotice {
+  margin: 16px;
+  padding: 12px;
+  border-radius: 16px;
+  background: #ffffff;
+  border: 1.5px solid rgba(4,45,27,.22);
+  font-size: 12px;
+  color: #244335;
+  font-weight: 800;
+}
+.govMappingNotice { margin-top: 20px; border-left: 8px solid #042d1b !important; }
+.calmQuickActions { grid-template-columns: 1fr 1fr !important; }
+.calmSnapshot details {
+  margin-top: 10px;
+  background: #fff;
+  border-radius: 16px;
+  border: 1.5px solid rgba(4,45,27,.18);
+}
+.calmParkDetails {
+  border: 1.5px solid rgba(4,45,27,.18);
+  border-radius: 16px;
+  background: #fff;
+  margin: 10px 0;
+}
+.calmParkDetails > summary {
+  min-height: 54px;
+  padding: 14px;
+  font-weight: 950;
+}
+@media (min-width: 900px) {
+  .quietMenu { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .bottomNav { display: none; }
+}
+@media (max-width: 430px) {
+  .app-shell {
+    border-left: 3px solid var(--genevieve-border) !important;
+    border-right: 3px solid var(--genevieve-border) !important;
+  }
+}
+
+
+/* DOGPARK_RESET_ALERTS_FINAL_PATCH */
+.resetPanel {
+  border-left: 8px solid var(--fire, #f10b0b) !important;
+  background: linear-gradient(180deg, #fff7f7, #ffffff) !important;
+}
+.resetButton {
+  width: 100%;
+  background: var(--fire, #f10b0b) !important;
+  color: #fff !important;
+  margin-top: 8px;
+}
+.alertResetRow {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  margin-top: 10px;
+}
+.alertResetStatusGood {
+  background: var(--kelly, #00a651) !important;
+  color: #fff !important;
+  border-color: #006b35 !important;
+}
+
+
+/* DOGPARK_SIMPLE_TOGGLES_AUTISM_FINAL_PATCH */
+:root {
+  --comfort-gap: 18px;
+  --comfort-radius: 24px;
+}
+body.comfortMode .app-shell {
+  background: linear-gradient(180deg, rgba(218,246,227,.98), rgba(255,255,255,.99) 76%) !important;
+}
+body.comfortMode .card {
+  margin-bottom: var(--comfort-gap) !important;
+  border-radius: var(--comfort-radius) !important;
+}
+body.comfortMode .screen .card + .card {
+  margin-top: var(--comfort-gap) !important;
+}
+body.comfortMode button,
+body.comfortMode input,
+body.comfortMode select,
+body.comfortMode textarea {
+  min-height: 52px !important;
+}
+.calmToggleCard {
+  border-left: 8px solid var(--deep, #042d1b) !important;
+  background: linear-gradient(180deg, #f7fff9, #ffffff) !important;
+}
+.simpleToggleGrid,
+.buttonGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin: 12px 0;
+}
+.amberBtn {
+  background: var(--amber, #ff9500) !important;
+  color: #111 !important;
+}
+.resetButton {
+  background: var(--fire, #f10b0b) !important;
+  color: #fff !important;
+}
+.softDetails {
+  border: 1.5px solid rgba(4,45,27,.18);
+  background: #fff;
+  border-radius: 18px;
+  padding: 0 12px;
+  margin: 12px 0;
+}
+.checkDogCard {
+  border-left: 8px solid var(--kelly, #00a651) !important;
+  background: #ffffff !important;
+}
+.checkDogCard.yellow { border-left-color: var(--sunburst, #ffe100) !important; }
+.checkDogCard.amber { border-left-color: var(--amber, #ff9500) !important; }
+.checkDogCard.red { border-left-color: var(--fire, #f10b0b) !important; }
+.bestMateCard {
+  border-left: 8px solid var(--kelly, #00a651) !important;
+  background: linear-gradient(180deg, #f0fff5, #ffffff) !important;
+}
+.hiddenEvidence details:not([open]) + .councilEvidence {
+  display: none;
+}
+@media (min-width: 740px) {
+  .simpleToggleGrid,
+  .buttonGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+
+/* DOGPARK_OWNER_SUPERVISION_FINAL_PATCH */
+.supervisionRequired{border:2.5px solid var(--fire,#f10b0b)!important;background:#fff2f2!important}
+.ownerDutyTimer{border-left:8px solid var(--amber,#ff9500)!important}
+.ownerDutyTimer.red{border-left-color:var(--fire,#f10b0b)!important;background:#ffe6e6!important}
+.ownerDutyTimer.green{border-left-color:var(--kelly,#00a651)!important;background:#f0fff5!important}
+.unattendedReport{border-left:8px solid var(--fire,#f10b0b)!important;background:#fff7f7!important}
+
+
+/* DOGPARK_LAUNCH_CHECKLIST_FINAL_PATCH */
+.launchSummary {
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:14px;
+}
+.launchItem {
+  border:1.5px solid rgba(4,45,27,.18);
+  border-left:8px solid var(--deep, #042d1b);
+  background:#fff;
+  border-radius:16px;
+  padding:12px;
+  margin:10px 0;
+}
+.launchItem.green { border-left-color: var(--kelly, #00a651) !important; }
+.launchItem.amber { border-left-color: var(--amber, #ff9500) !important; }
+.launchItem.red { border-left-color: var(--fire, #f10b0b) !important; }
+.launchItem h3 {
+  margin:0 0 6px;
+  font-size:16px;
+}
+.launchItem small {
+  display:inline-flex;
+  font-weight:950;
+  border-radius:999px;
+  padding:5px 9px;
+  background:#f2f5f2;
+  margin-bottom:8px;
+}
+.launchSectionHeading {
+  margin:22px 0 8px;
+  padding:10px 12px;
+  border-radius:14px;
+  background:linear-gradient(135deg, rgba(0,166,81,.12), #fff);
+  color:var(--deep,#042d1b);
+  border:1.5px solid rgba(4,45,27,.18);
+}
+
+
+/* DOGPARK_UPLOADED_FILES_MERGE_FINAL_PATCH */
+.uploadedFileList{max-height:360px;overflow:auto;border:1.5px solid rgba(4,45,27,.18);border-radius:16px;padding:12px 12px 12px 28px;background:#fff}
+.uploadedFileList li{padding:5px 0;overflow-wrap:anywhere}
+code{background:#eef8f0;border:1px solid rgba(4,45,27,.14);border-radius:8px;padding:2px 6px}
+
+
+/* DOGPARK_THREE_GREEN_LAYERS_FROM_COLOUR_CHART_FINAL
+   Timber Green border + Elf Green fading background + Field Green final fade.
+   Requested colour chart mapping:
+   - Timber Green = outside border
+   - Elf Green = background fading out
+   - Field Green = final background layer where white used to be, also fading out
+*/
+:root {
+  --timber-green: #123f31;
+  --elf-green: #255f34;
+  --field-green: #27954b;
+  --field-green-soft: rgba(39, 149, 75, 0.16);
+  --elf-green-soft: rgba(37, 95, 52, 0.18);
+}
+
+/* strongest outer frame */
+html,
+body {
+  background:
+    linear-gradient(180deg,
+      var(--elf-green) 0%,
+      rgba(37, 95, 52, 0.72) 28%,
+      rgba(39, 149, 75, 0.38) 64%,
+      rgba(39, 149, 75, 0.14) 100%) !important;
+}
+
+/* timber green border layer */
+.app,
+.app-shell,
+.page-shell,
+#root,
+body > div:first-child {
+  border-left: 8px solid var(--timber-green) !important;
+  border-right: 8px solid var(--timber-green) !important;
+}
+
+/* main calm green fade layer */
+.app,
+.app-shell,
+.page-shell,
+main,
+.main,
+.dashboard,
+.screen {
+  background:
+    linear-gradient(180deg,
+      rgba(37, 95, 52, 0.24) 0%,
+      rgba(37, 95, 52, 0.12) 34%,
+      rgba(39, 149, 75, 0.10) 72%,
+      rgba(39, 149, 75, 0.04) 100%) !important;
+}
+
+/* replace harsh white cards with field green fade out */
+.card,
+.panel,
+.hero,
+.calmHero,
+.calmToggleCard,
+.metric,
+.greenCard,
+.launchItem,
+.config-row,
+.result,
+section.card,
+article.card {
+  background:
+    linear-gradient(180deg,
+      rgba(39, 149, 75, 0.18) 0%,
+      rgba(39, 149, 75, 0.09) 42%,
+      rgba(39, 149, 75, 0.035) 100%) !important;
+  border-color: rgba(18, 63, 49, 0.22) !important;
+}
+
+/* keep readable inner input areas soft, not bright white */
+input,
+select,
+textarea,
+details,
+.answer,
+.empty,
+.todayAnswer,
+.statusLine,
+.uploadedFileList,
+.launchSectionHeading {
+  background:
+    linear-gradient(180deg,
+      rgba(255, 255, 255, 0.92) 0%,
+      rgba(39, 149, 75, 0.08) 100%) !important;
+  border-color: rgba(18, 63, 49, 0.24) !important;
+}
+
+/* darker calm border on important cards */
+.card,
+.panel,
+.calmToggleCard,
+.launchItem {
+  border-left-color: var(--timber-green) !important;
+}
+
+/* preserve legal alert meanings */
+.green,
+.result.green,
+.todayAnswer.green {
+  border-left-color: #00a651 !important;
+}
+.yellow,
+.result.yellow,
+.todayAnswer.yellow {
+  border-left-color: #ffe100 !important;
+}
+.amber,
+.result.amber,
+.todayAnswer.amber {
+  border-left-color: #ff9500 !important;
+}
+.red,
+.result.red,
+.todayAnswer.red,
+.danger {
+  border-left-color: #f10b0b !important;
+}
+
+/* make headers sit naturally on the three-green palette */
+header,
+.topbar,
+.brandbar,
+.appHeader {
+  background:
+    radial-gradient(circle at 10% 0%, rgba(39, 149, 75, 0.42), transparent 22rem),
+    linear-gradient(135deg, var(--timber-green), #062719 72%) !important;
+}
+
+/* calm autism-friendly green: no bright white glare */
+body.comfortMode .app-shell,
+body.comfortMode .page-shell,
+body.comfortMode .app,
+body.comfortMode main {
+  background:
+    linear-gradient(180deg,
+      rgba(37, 95, 52, 0.18),
+      rgba(39, 149, 75, 0.08) 58%,
+      rgba(39, 149, 75, 0.035)) !important;
+}
+
+
+/* DOGPARK_FIELD_GREEN_FADE_FIXED_FINAL
+   Corrected from user direction:
+   - Timber Green = border around whole app.
+   - Elf Green = outside/underlay background fading out.
+   - Field Green = card/panel/previous-white areas fading out.
+   - "What changed right now" is filled green, not white.
+*/
+:root {
+  --timber-green: #103f31;
+  --elf-green: #215d36;
+  --field-green: #27964b;
+  --field-green-mid: rgba(39, 150, 75, 0.34);
+  --field-green-soft: rgba(39, 150, 75, 0.18);
+  --field-green-faint: rgba(39, 150, 75, 0.065);
+}
+
+/* The whole outside frame must be Timber Green */
+html,
+body {
+  background:
+    linear-gradient(180deg,
+      var(--elf-green) 0%,
+      rgba(33, 93, 54, 0.86) 22%,
+      rgba(39, 150, 75, 0.58) 56%,
+      rgba(39, 150, 75, 0.24) 100%) !important;
+}
+
+.app,
+.app-shell,
+.page-shell,
+#root,
+body > div:first-child {
+  border: 10px solid var(--timber-green) !important;
+  border-radius: 0 !important;
+  background:
+    linear-gradient(180deg,
+      rgba(33, 93, 54, 0.22) 0%,
+      rgba(39, 150, 75, 0.13) 46%,
+      rgba(39, 150, 75, 0.06) 100%) !important;
+}
+
+/* Main background layer: no flat white, it fades through Field Green */
+main,
+.main,
+.dashboard,
+.screen,
+.screen.active,
+.calmScreen,
+.content,
+.app-main {
+  background:
+    linear-gradient(180deg,
+      rgba(33, 93, 54, 0.16) 0%,
+      rgba(39, 150, 75, 0.15) 36%,
+      rgba(39, 150, 75, 0.08) 72%,
+      rgba(39, 150, 75, 0.035) 100%) !important;
+}
+
+/* Most panels: Field Green fading out, not plain white */
+.card,
+.panel,
+section.card,
+article.card,
+.config-row,
+.result,
+.metric,
+.launchItem,
+.calmHero,
+.hero.card,
+.resetPanel,
+.details,
+.summary,
+.list-card {
+  background:
+    linear-gradient(180deg,
+      rgba(39, 150, 75, 0.26) 0%,
+      rgba(39, 150, 75, 0.14) 48%,
+      rgba(39, 150, 75, 0.055) 100%) !important;
+  border-color: rgba(16, 63, 49, 0.28) !important;
+  box-shadow: 0 12px 34px rgba(16, 63, 49, 0.12) !important;
+}
+
+/* The one you specifically meant: What changed right now must look filled green */
+#calmQuickStatusCard,
+.homeCheckActions,
+.card:has(#quickDogSelect),
+.card:has(#quickStatusResult) {
+  background:
+    linear-gradient(180deg,
+      rgba(39, 150, 75, 0.92) 0%,
+      rgba(39, 150, 75, 0.62) 45%,
+      rgba(39, 150, 75, 0.26) 100%) !important;
+  border-left: 10px solid var(--timber-green) !important;
+  border-color: rgba(16, 63, 49, 0.58) !important;
+}
+
+/* Make text readable on the filled green "What changed right now" panel */
+#calmQuickStatusCard,
+#calmQuickStatusCard h2,
+#calmQuickStatusCard h3,
+#calmQuickStatusCard p,
+#calmQuickStatusCard label,
+#calmQuickStatusCard .eyebrow {
+  color: #ffffff !important;
+}
+#calmQuickStatusCard select,
+#calmQuickStatusCard input,
+#calmQuickStatusCard textarea {
+  background:
+    linear-gradient(180deg,
+      rgba(255,255,255,0.96),
+      rgba(232,248,236,0.94)) !important;
+  color: #0c2118 !important;
+}
+
+/* Today's snapshot / active interactions / live status panels should be Field Green fade */
+.calmSnapshot,
+#todaySnapshot,
+#activeInteractions,
+#interactionRules,
+#spaceAlerts,
+#checkedInDogsList,
+#bestMateStatusList,
+#supervisionTimerList,
+#unattendedReportList,
+.card:has(#todayAnswer),
+.card:has(#spaceAlerts),
+.card:has(#interactionRules),
+.card:has(#checkedInDogsList),
+.card:has(#bestMateStatusList),
+.card:has(#supervisionTimerList),
+.card:has(#unattendedReportList) {
+  background:
+    linear-gradient(180deg,
+      rgba(39, 150, 75, 0.38) 0%,
+      rgba(39, 150, 75, 0.18) 48%,
+      rgba(39, 150, 75, 0.07) 100%) !important;
+  border-left: 8px solid var(--timber-green) !important;
+}
+
+/* Where the app was white, give it a Field Green fade while keeping readability */
+input,
+select,
+textarea,
+details,
+summary,
+.answer,
+.empty,
+.todayAnswer,
+.statusLine,
+.uploadedFileList,
+.launchSectionHeading,
+tbody,
+thead,
+table,
+.modal,
+.dialog,
+.notice {
+  background:
+    linear-gradient(180deg,
+      rgba(255, 255, 255, 0.93) 0%,
+      rgba(39, 150, 75, 0.10) 100%) !important;
+  border-color: rgba(16, 63, 49, 0.24) !important;
+}
+
+/* Keep the locked alert colours meaningful and not changed into green */
+.result.green,
+.todayAnswer.green,
+.green,
+.launchItem.green {
+  border-left-color: #00a651 !important;
+}
+.result.yellow,
+.todayAnswer.yellow,
+.yellow,
+.launchItem.yellow {
+  border-left-color: #ffe100 !important;
+}
+.result.amber,
+.todayAnswer.amber,
+.amber,
+.launchItem.amber {
+  border-left-color: #ff9500 !important;
+}
+.result.red,
+.todayAnswer.red,
+.red,
+.launchItem.red {
+  border-left-color: #f10b0b !important;
+}
+
+/* Top header remains Timber Green / deep Genevieve green */
+header,
+.topbar,
+.brandbar,
+.appHeader,
+.header {
+  background:
+    radial-gradient(circle at 10% 0%, rgba(39,150,75,0.42), transparent 20rem),
+    linear-gradient(135deg, var(--timber-green), #061f16 76%) !important;
+}
+
+/* Mobile: keep border visible but not too thick */
+@media (max-width: 760px) {
+  .app,
+  .app-shell,
+  .page-shell,
+  #root,
+  body > div:first-child {
+    border-width: 6px !important;
+  }
+}
+
+
+/* DOGPARK_FIELD_GREEN_ALL_WHITE_AREAS_FIXED_FINAL
+   User correction applied:
+   turn the white areas on the named app screens into Field Green fading panels/controls.
+   This patch intentionally over-targets common white UI blocks while preserving the
+   official alert colours (green/yellow/amber/red/black) and the deep Timber Green header.
+*/
+:root {
+  --timber-green: #103f31;
+  --elf-green: #215d36;
+  --field-green: #27964b;
+  --field-green-strong: rgba(39,150,75,.44);
+  --field-green-mid: rgba(39,150,75,.26);
+  --field-green-soft: rgba(39,150,75,.14);
+  --field-green-faint: rgba(39,150,75,.06);
+}
+
+/* Whole outside frame */
+body {
+  background:
+    radial-gradient(circle at top left, rgba(16,63,49,.28), transparent 26rem),
+    linear-gradient(180deg, rgba(33,93,54,.92) 0%, rgba(33,93,54,.66) 18%, rgba(39,150,75,.28) 66%, rgba(39,150,75,.12) 100%) !important;
+}
+
+.app-shell,
+.page-shell,
+.app,
+#root {
+  border: 10px solid var(--timber-green) !important;
+  background:
+    linear-gradient(180deg, rgba(33,93,54,.19) 0%, rgba(39,150,75,.12) 42%, rgba(39,150,75,.05) 100%) !important;
+}
+
+/* Page content layer */
+.screen,
+.screen.calmScreen,
+main,
+.app-main {
+  background:
+    linear-gradient(180deg, rgba(39,150,75,.10) 0%, rgba(39,150,75,.06) 62%, rgba(39,150,75,.03) 100%) !important;
+}
+
+/* Any generic white cards should now be Field Green fading out */
+.screen .card,
+.screen .hero,
+.screen details.card,
+.screen .progressiveDogForm .formStep,
+.screen .toolbar,
+.screen .metric,
+.screen .launchItem,
+.screen .module,
+.screen .config-row,
+.screen .resultCard,
+.screen .deletePanel,
+.screen .councilHero,
+.screen .greyHero,
+.screen .calmHero,
+.screen .list-card,
+.screen .homeCard,
+.screen .softGreen,
+.screen .toggle,
+.screen .chip,
+.screen .moduleBadge,
+.screen .todayAnswer:not(.green):not(.yellow):not(.amber):not(.red):not(.black),
+.screen .answer:not(.green):not(.yellow):not(.amber):not(.red):not(.black),
+.screen .note,
+.screen .mobileHint,
+.screen .warning:not(.red),
+.screen .statusLine,
+.screen .empty,
+.screen .summary,
+.screen .report-card,
+.screen .dog-card,
+.screen .park-card,
+.screen .signal:not(.green):not(.yellow):not(.amber):not(.red):not(.black),
+.screen .quietPanel,
+.screen .appPanel,
+.screen .councilEvidence,
+.screen .trademarkNotice {
+  background:
+    linear-gradient(180deg, var(--field-green-strong) 0%, var(--field-green-soft) 52%, var(--field-green-faint) 100%) !important;
+  border-color: rgba(16,63,49,.28) !important;
+  box-shadow: 0 10px 28px rgba(16,63,49,.10) !important;
+}
+
+/* Specific sections the user named */
+#home .card,
+#parks .card,
+#dogs .card,
+#checkin .card,
+#suitability .card,
+#emergency .card,
+#more .card,
+#settings .card,
+#compatibility .card,
+#space .card {
+  background:
+    linear-gradient(180deg, rgba(39,150,75,.38) 0%, rgba(39,150,75,.18) 50%, rgba(39,150,75,.07) 100%) !important;
+}
+
+/* The quick front-page panel must be distinctly filled field green */
+#calmQuickStatusCard,
+#home .card:has(#quickDogSelect),
+#home .card:has(#quickStatusResult) {
+  background:
+    linear-gradient(180deg, rgba(39,150,75,.88) 0%, rgba(39,150,75,.56) 48%, rgba(39,150,75,.24) 100%) !important;
+  border-left: 10px solid var(--timber-green) !important;
+}
+#calmQuickStatusCard,
+#calmQuickStatusCard h2,
+#calmQuickStatusCard p,
+#calmQuickStatusCard label,
+#calmQuickStatusCard .eyebrow {
+  color: #fff !important;
+}
+
+/* Today's snapshot / active interactions and similar named white blocks */
+#home .card:has(#todayAnswer),
+#home .card:has(#activeInteractionsList),
+#home .card:has(#recentChangesList),
+#dogs .card:has(#dogsList),
+#dogs .card:has(#activeDogsList),
+#dogs .card:has(#interactionRulesList),
+#parks .card:has(#parkResults),
+#parks .card:has(#askAnswer),
+#checkin .card:has(#checkInDog),
+#checkin .card:has(#mateAlertDog),
+#checkin .card:has(#checkedInDogsList),
+#checkin .card:has(#bestMateStatusList),
+#checkin .card:has(#checkInAuditList),
+#suitability .card:has(#suitabilityForm),
+#emergency .card:has(#emergencySummary),
+#emergency .card:has(#vetLinks),
+#emergency .card:has(#aloneTimerStatus),
+#emergency .card:has(#emergencyAudit),
+#settings .card:has(#moduleSettingsForm),
+#settings .card:has(#settingsResult),
+#more .card,
+#more details.card,
+#more .card:has(#interactionRulesList),
+#more .card:has(#spaceSettingsResult) {
+  background:
+    linear-gradient(180deg, rgba(39,150,75,.42) 0%, rgba(39,150,75,.18) 56%, rgba(39,150,75,.07) 100%) !important;
+}
+
+/* Inputs, selects, textareas, labels, summaries, accordions, and white toggles */
+.screen input:not([type='checkbox']):not([type='radio']),
+.screen select,
+.screen textarea,
+.screen label,
+.screen .toggle,
+.screen details > summary,
+.screen details.card > summary,
+.screen .progressiveDogForm details.formStep summary,
+.screen .progressiveDogForm .formStep,
+.screen .deletePanel,
+.screen .toolbar,
+.screen .chips,
+.screen .meta,
+.screen .auditRow,
+.screen .logRow,
+.screen .parkMeta,
+.screen .parkAmenities,
+.screen .parkWarnings,
+.screen .questionBox,
+.screen .searchPanel,
+.screen .searchField,
+.screen .searchResults,
+.screen .field,
+.screen .selectField {
+  background:
+    linear-gradient(180deg, rgba(39,150,75,.32) 0%, rgba(39,150,75,.14) 58%, rgba(39,150,75,.05) 100%) !important;
+  border-color: rgba(16,63,49,.28) !important;
+}
+
+/* Do not paint the literal checkbox box; only the toggle container. */
+.screen input[type='checkbox'],
+.screen input[type='radio'] {
+  accent-color: #0f6d39 !important;
+}
+
+/* Make pills/chips/toolbar buttons no longer white */
+.screen .chip,
+.screen .moduleBadge,
+.screen .toolbar button,
+.screen .quietLinkButton,
+.screen .secondary,
+.screen .resetButton,
+.screen .smallBtn,
+.screen .miniBtn,
+.screen .ghostButton {
+  background:
+    linear-gradient(180deg, rgba(39,150,75,.36) 0%, rgba(39,150,75,.14) 100%) !important;
+  border-color: rgba(16,63,49,.34) !important;
+}
+
+/* Search boxes, cards, labels on park search screen */
+#parks input,
+#parks select,
+#parks textarea,
+#parks .card,
+#parks #parkResults > *,
+#parks .toolbar,
+#parks .answer,
+#parks .chip,
+#parks .moduleBadge,
+#parks .park-card,
+#parks details.card,
+#parks summary {
+  background:
+    linear-gradient(180deg, rgba(39,150,75,.38) 0%, rgba(39,150,75,.16) 54%, rgba(39,150,75,.06) 100%) !important;
+}
+
+/* Dog screen */
+#dogs input,
+#dogs select,
+#dogs textarea,
+#dogs .card,
+#dogs .dog-card,
+#dogs .answer,
+#dogs details.card,
+#dogs summary,
+#dogs .toggle,
+#dogs .chip,
+#dogs .moduleBadge {
+  background:
+    linear-gradient(180deg, rgba(39,150,75,.38) 0%, rgba(39,150,75,.16) 54%, rgba(39,150,75,.06) 100%) !important;
+}
+
+/* Check-in screen */
+#checkin input,
+#checkin select,
+#checkin textarea,
+#checkin .card,
+#checkin .answer,
+#checkin .toggle,
+#checkin details.card,
+#checkin summary,
+#checkin .chip,
+#checkin .moduleBadge,
+#checkin #checkedInDogsList > *,
+#checkin #bestMateStatusList > *,
+#checkin #checkInAuditList > * {
+  background:
+    linear-gradient(180deg, rgba(39,150,75,.40) 0%, rgba(39,150,75,.16) 56%, rgba(39,150,75,.06) 100%) !important;
+}
+
+/* Suitability screen */
+#suitability input,
+#suitability select,
+#suitability textarea,
+#suitability .card,
+#suitability .answer:not(.green):not(.yellow):not(.amber):not(.red):not(.black),
+#suitability details.card,
+#suitability summary,
+#suitability .chip,
+#suitability .moduleBadge,
+#suitability .note,
+#suitability .todayAnswer:not(.green):not(.yellow):not(.amber):not(.red):not(.black) {
+  background:
+    linear-gradient(180deg, rgba(39,150,75,.40) 0%, rgba(39,150,75,.16) 56%, rgba(39,150,75,.06) 100%) !important;
+}
+
+/* Emergency + More/Settings toggles */
+#emergency input,
+#emergency select,
+#emergency textarea,
+#emergency .card,
+#emergency .answer,
+#emergency .toggle,
+#emergency details.card,
+#emergency summary,
+#settings input,
+#settings select,
+#settings textarea,
+#settings .card,
+#settings .answer,
+#settings .toggle,
+#settings details.card,
+#settings summary,
+#more input,
+#more select,
+#more textarea,
+#more .card,
+#more .answer,
+#more .toggle,
+#more details.card,
+#more summary {
+  background:
+    linear-gradient(180deg, rgba(39,150,75,.40) 0%, rgba(39,150,75,.16) 56%, rgba(39,150,75,.06) 100%) !important;
+}
+
+/* Keep real alert colours intact */
+.green, .todayAnswer.green, .result.green, .signal.green { background: #00a651 !important; color: #fff !important; border-color: #006b35 !important; }
+.yellow, .todayAnswer.yellow, .result.yellow, .signal.yellow { background: #ffe100 !important; color: #111 !important; border-color: #b39b00 !important; }
+.amber, .todayAnswer.amber, .result.amber, .signal.amber { background: #ff9500 !important; color: #111 !important; border-color: #a84e00 !important; }
+.red, .todayAnswer.red, .result.red, .signal.red { background: #f10b0b !important; color: #fff !important; border-color: #970000 !important; }
+.black, .todayAnswer.black, .result.black, .signal.black { background: #000 !important; color: #fff !important; border-color: #000 !important; }
+
+/* Still keep top branded header deep */
+.topbar,
+header,
+.brandbar,
+.appHeader {
+  background:
+    radial-gradient(circle at 10% 0%, rgba(39,150,75,.32), transparent 22rem),
+    linear-gradient(135deg, var(--timber-green), #062719 72%) !important;
+}
+
+@media (max-width:760px) {
+  .app-shell, .page-shell, .app, #root { border-width: 6px !important; }
+}
+
+
+/* STRONGER FIELD GREEN VISIBILITY PATCH
+   User request: make the Field Green panels much stronger because they are hard to see.
+   This override increases fill strength, border visibility, and panel contrast while
+   keeping the official alert colours unchanged.
+*/
+:root {
+  --field-green-strong: rgba(39,150,75,.72);
+  --field-green-mid: rgba(39,150,75,.54);
+  --field-green-soft: rgba(39,150,75,.34);
+  --field-green-faint: rgba(39,150,75,.18);
+}
+
+.app-shell,
+.page-shell,
+.app,
+#root {
+  border: 12px solid var(--timber-green) !important;
+  background:
+    linear-gradient(180deg, rgba(33,93,54,.28) 0%, rgba(39,150,75,.20) 42%, rgba(39,150,75,.10) 100%) !important;
+}
+
+.screen,
+.screen.calmScreen,
+main,
+.app-main {
+  background:
+    linear-gradient(180deg, rgba(39,150,75,.18) 0%, rgba(39,150,75,.10) 62%, rgba(39,150,75,.06) 100%) !important;
+}
+
+.screen .card,
+.screen .hero,
+.screen details.card,
+.screen .progressiveDogForm .formStep,
+.screen .toolbar,
+.screen .metric,
+.screen .launchItem,
+.screen .module,
+.screen .config-row,
+.screen .resultCard,
+.screen .deletePanel,
+.screen .councilHero,
+.screen .greyHero,
+.screen .calmHero,
+.screen .list-card,
+.screen .homeCard,
+.screen .softGreen,
+.screen .toggle,
+.screen .chip,
+.screen .moduleBadge,
+.screen .todayAnswer:not(.green):not(.yellow):not(.amber):not(.red):not(.black),
+.screen .answer:not(.green):not(.yellow):not(.amber):not(.red):not(.black),
+.screen .note,
+.screen .mobileHint,
+.screen .warning:not(.red),
+.screen .statusLine,
+.screen .empty,
+.screen .summary,
+.screen .report-card,
+.screen .dog-card,
+.screen .park-card,
+.screen .signal:not(.green):not(.yellow):not(.amber):not(.red):not(.black),
+.screen .quietPanel,
+.screen .appPanel,
+.screen .councilEvidence,
+.screen .trademarkNotice {
+  background:
+    linear-gradient(180deg, rgba(39,150,75,.66) 0%, rgba(39,150,75,.34) 54%, rgba(39,150,75,.18) 100%) !important;
+  border: 1.5px solid rgba(16,63,49,.38) !important;
+  box-shadow: 0 12px 30px rgba(16,63,49,.12) !important;
+}
+
+#home .card,
+#parks .card,
+#dogs .card,
+#checkin .card,
+#suitability .card,
+#emergency .card,
+#more .card,
+#settings .card,
+#compatibility .card,
+#space .card,
+#home details.card,
+#parks details.card,
+#dogs details.card,
+#checkin details.card,
+#suitability details.card,
+#emergency details.card,
+#more details.card,
+#settings details.card {
+  background:
+    linear-gradient(180deg, rgba(39,150,75,.74) 0%, rgba(39,150,75,.38) 52%, rgba(39,150,75,.18) 100%) !important;
+}
+
+#home .card:has(#todayAnswer),
+#home .card:has(#activeInteractionsList),
+#home .card:has(#recentChangesList),
+#dogs .card:has(#dogsList),
+#dogs .card:has(#activeDogsList),
+#dogs .card:has(#interactionRulesList),
+#parks .card:has(#parkResults),
+#parks .card:has(#askAnswer),
+#checkin .card:has(#checkInDog),
+#checkin .card:has(#mateAlertDog),
+#checkin .card:has(#checkedInDogsList),
+#checkin .card:has(#bestMateStatusList),
+#checkin .card:has(#checkInAuditList),
+#suitability .card:has(#suitabilityForm),
+#emergency .card:has(#emergencySummary),
+#emergency .card:has(#vetLinks),
+#emergency .card:has(#aloneTimerStatus),
+#emergency .card:has(#emergencyAudit),
+#settings .card:has(#moduleSettingsForm),
+#settings .card:has(#settingsResult),
+#more .card:has(#interactionRulesList),
+#more .card:has(#spaceSettingsResult) {
+  background:
+    linear-gradient(180deg, rgba(39,150,75,.80) 0%, rgba(39,150,75,.42) 56%, rgba(39,150,75,.20) 100%) !important;
+}
+
+.screen input:not([type='checkbox']):not([type='radio']),
+.screen select,
+.screen textarea,
+.screen label,
+.screen .toggle,
+.screen details > summary,
+.screen details.card > summary,
+.screen .progressiveDogForm details.formStep summary,
+.screen .progressiveDogForm .formStep,
+.screen .deletePanel,
+.screen .toolbar,
+.screen .chips,
+.screen .meta,
+.screen .auditRow,
+.screen .logRow,
+.screen .parkMeta,
+.screen .parkAmenities,
+.screen .parkWarnings,
+.screen .questionBox,
+.screen .searchPanel,
+.screen .searchField,
+.screen .searchResults,
+.screen .field,
+.screen .selectField,
+.screen .toolbar button,
+.screen .quietLinkButton,
+.screen .secondary,
+.screen .resetButton,
+.screen .smallBtn,
+.screen .miniBtn,
+.screen .ghostButton {
+  background:
+    linear-gradient(180deg, rgba(39,150,75,.62) 0%, rgba(39,150,75,.30) 58%, rgba(39,150,75,.14) 100%) !important;
+  border-color: rgba(16,63,49,.40) !important;
+}
+
+/* Make page-by-page white areas clearly visible */
+#parks input,
+#parks select,
+#parks textarea,
+#parks #parkResults > *,
+#parks .toolbar,
+#parks .answer,
+#parks .chip,
+#parks .moduleBadge,
+#parks .park-card,
+#parks summary,
+#dogs input,
+#dogs select,
+#dogs textarea,
+#dogs .dog-card,
+#dogs .answer,
+#dogs summary,
+#dogs .toggle,
+#dogs .chip,
+#dogs .moduleBadge,
+#checkin input,
+#checkin select,
+#checkin textarea,
+#checkin .answer,
+#checkin .toggle,
+#checkin summary,
+#checkin .chip,
+#checkin .moduleBadge,
+#checkin #checkedInDogsList > *,
+#checkin #bestMateStatusList > *,
+#checkin #checkInAuditList > *,
+#suitability input,
+#suitability select,
+#suitability textarea,
+#suitability .answer:not(.green):not(.yellow):not(.amber):not(.red):not(.black),
+#suitability summary,
+#suitability .chip,
+#suitability .moduleBadge,
+#suitability .note,
+#suitability .todayAnswer:not(.green):not(.yellow):not(.amber):not(.red):not(.black),
+#emergency input,
+#emergency select,
+#emergency textarea,
+#emergency .answer,
+#emergency .toggle,
+#emergency summary,
+#settings input,
+#settings select,
+#settings textarea,
+#settings .answer,
+#settings .toggle,
+#settings summary,
+#more input,
+#more select,
+#more textarea,
+#more .answer,
+#more .toggle,
+#more summary {
+  background:
+    linear-gradient(180deg, rgba(39,150,75,.70) 0%, rgba(39,150,75,.34) 58%, rgba(39,150,75,.16) 100%) !important;
+}
+
+/* Text clarity on stronger green panels */
+.screen .card,
+.screen details.card,
+.screen label,
+.screen summary,
+.screen .chip,
+.screen .moduleBadge,
+.screen input,
+.screen select,
+.screen textarea,
+.screen .answer,
+.screen .note,
+.screen .statusLine {
+  color: #123528 !important;
+}
+
+.screen input::placeholder,
+.screen textarea::placeholder {
+  color: rgba(18,53,40,.78) !important;
+}
+
+@media (max-width:760px) {
+  .app-shell, .page-shell, .app, #root { border-width: 8px !important; }
+}
+
+
+/* NO WHITE + DARKER FIELD GREEN PATCH
+   User request: no white visible in the white panels; make the field green darker and obvious.
+   This patch intentionally forces the former white surfaces to strong Field Green fades.
+*/
+:root{
+  --field-green: #27964b;
+  --field-green-very-strong: rgba(39,150,75,.92);
+  --field-green-strong: rgba(39,150,75,.82);
+  --field-green-mid: rgba(39,150,75,.68);
+  --field-green-soft: rgba(39,150,75,.54);
+  --field-green-faint: rgba(39,150,75,.42);
+}
+
+body,
+.app-shell,
+.page-shell,
+.app,
+#root{
+  background: linear-gradient(180deg, rgba(125,197,143,.52) 0%, rgba(87,167,109,.42) 52%, rgba(39,150,75,.30) 100%) !important;
+}
+
+main,
+.screen,
+.screen.calmScreen,
+.app-main{
+  background: linear-gradient(180deg, rgba(39,150,75,.48) 0%, rgba(39,150,75,.34) 55%, rgba(39,150,75,.24) 100%) !important;
+}
+
+/* Formerly white blocks: cards and sections */
+.screen .card,
+.screen details.card,
+.screen .hero,
+.screen .metric,
+.screen .toolbar,
+.screen .homeCard,
+.screen .softGreen,
+.screen .dog-card,
+.screen .park-card,
+.screen .resultCard,
+.screen .deletePanel,
+.screen .questionBox,
+.screen .searchPanel,
+.screen .searchResults,
+.screen .quietPanel,
+.screen .appPanel,
+.screen .note,
+.screen .summary,
+.screen .empty,
+.screen .statusLine,
+.screen .councilEvidence,
+.screen .trademarkNotice,
+.screen .module,
+.screen .config-row,
+.screen .calmHero,
+.screen .greyHero,
+.screen .councilHero,
+.screen .homePanel,
+.screen .report-card,
+.screen .auditPill,
+.screen .medicalSummary,
+.screen .uploadedFileList,
+.screen .ownerDutyTimer,
+.screen .unattendedReport,
+.screen .supervisionRequired{
+  background: linear-gradient(180deg, var(--field-green-very-strong) 0%, var(--field-green-mid) 58%, var(--field-green-faint) 100%) !important;
+  border-color: rgba(4,45,27,.42) !important;
+  box-shadow: 0 10px 26px rgba(4,45,27,.10) !important;
+}
+
+/* Specific named white areas user listed */
+#home #todayAnswer:not(.green):not(.yellow):not(.amber):not(.red):not(.black),
+#home #activeInteractionsList > *,
+#home #recentChangesList > *,
+#dogs #dogsList > *,
+#dogs #activeDogsList > *,
+#dogs #interactionRulesList > *,
+#parks #parkResults > *,
+#parks #askAnswer,
+#checkin #checkedInDogsList > *,
+#checkin #bestMateStatusList > *,
+#checkin #checkInAuditList > *,
+#suitability #suitabilityOutput,
+#emergency #emergencySummary,
+#emergency #vetLinks > *,
+#emergency #aloneTimerStatus,
+#emergency #emergencyAudit > *,
+#more #spaceSettingsResult,
+#settings #settingsResult{
+  background: linear-gradient(180deg, rgba(39,150,75,.94) 0%, rgba(39,150,75,.78) 56%, rgba(39,150,75,.58) 100%) !important;
+  border-color: rgba(4,45,27,.46) !important;
+}
+
+/* Form fields, toggles, summaries, chips: remove white and make green visible */
+.screen input:not([type='checkbox']):not([type='radio']),
+.screen select,
+.screen textarea,
+.screen label,
+.screen summary,
+.screen details > summary,
+.screen .toggle,
+.screen .chip,
+.screen .moduleBadge,
+.screen .answer:not(.green):not(.yellow):not(.amber):not(.red):not(.black),
+.screen .signal:not(.green):not(.yellow):not(.amber):not(.red):not(.black),
+.screen .todayAnswer:not(.green):not(.yellow):not(.amber):not(.red):not(.black),
+.screen .searchField,
+.screen .field,
+.screen .selectField,
+.screen .toolbar button,
+.screen .quietLinkButton,
+.screen .secondary,
+.screen .resetButton,
+.screen .smallBtn,
+.screen .miniBtn,
+.screen .ghostButton,
+.screen .meta,
+.screen .parkMeta,
+.screen .parkAmenities,
+.screen .parkWarnings,
+.screen .auditRow,
+.screen .logRow,
+.screen .launchItem{
+  background: linear-gradient(180deg, rgba(39,150,75,.90) 0%, rgba(39,150,75,.72) 58%, rgba(39,150,75,.52) 100%) !important;
+  border-color: rgba(4,45,27,.42) !important;
+}
+
+/* Make the named pages obviously green rather than white */
+#home .card,
+#dogs .card,
+#parks .card,
+#checkin .card,
+#ownerDuty .card,
+#suitability .card,
+#emergency .card,
+#launchChecklist .card,
+#uploadedFiles .card,
+#more .card,
+#settings .card{
+  background: linear-gradient(180deg, rgba(39,150,75,.96) 0%, rgba(39,150,75,.76) 56%, rgba(39,150,75,.56) 100%) !important;
+}
+
+/* But keep official alert colours intact */
+.green, .todayAnswer.green, .result.green, .signal.green { background: #00a651 !important; color:#fff !important; border-color:#006b35 !important; }
+.yellow, .todayAnswer.yellow, .result.yellow, .signal.yellow { background: #ffe100 !important; color:#111 !important; border-color:#b39b00 !important; }
+.amber, .todayAnswer.amber, .result.amber, .signal.amber { background: #ff9500 !important; color:#111 !important; border-color:#a84e00 !important; }
+.red, .todayAnswer.red, .result.red, .signal.red { background: #f10b0b !important; color:#fff !important; border-color:#970000 !important; }
+.black, .todayAnswer.black, .result.black, .signal.black { background: #000 !important; color:#fff !important; border-color:#000 !important; }
+
+/* Maintain readability on darker green */
+.screen .card,
+.screen details.card,
+.screen label,
+.screen summary,
+.screen input,
+.screen select,
+.screen textarea,
+.screen .answer,
+.screen .signal,
+.screen .todayAnswer,
+.screen .note,
+.screen .statusLine,
+.screen .chip,
+.screen .moduleBadge,
+.screen .parkMeta,
+.screen .parkAmenities,
+.screen .parkWarnings,
+.screen .logRow,
+.screen .auditRow{
+  color: #062f1c !important;
+}
+
+.screen input::placeholder,
+.screen textarea::placeholder{
+  color: rgba(6,47,28,.72) !important;
+}
+
+
+/* GENEVIEVE_FINAL_DEPLOY_TODAY_LOCKED_CSS
+   Final rebuild: dark visible Field Green, Timber Green border, Elf Green outer fade,
+   phone anti-flip/no-overflow, official alert colours preserved.
+*/
+:root {
+  --timber-green: #103f31;
+  --elf-green: #215d36;
+  --field-green: #27964b;
+  --field-green-dark-visible: rgba(39,150,75,.98);
+  --field-green-visible: rgba(39,150,75,.84);
+  --field-green-mid-visible: rgba(39,150,75,.68);
+  --field-green-soft-visible: rgba(39,150,75,.52);
+}
+
+html {
+  width: 100%;
+  min-width: 0 !important;
+  overflow-x: hidden !important;
+  background: var(--timber-green) !important;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  width: 100%;
+  min-width: 0 !important;
+  max-width: 100vw !important;
+  overflow-x: hidden !important;
+  background:
+    radial-gradient(circle at top left, rgba(33,93,54,.72), transparent 24rem),
+    linear-gradient(180deg, rgba(16,63,49,1) 0%, rgba(33,93,54,.86) 24%, rgba(39,150,75,.64) 74%, rgba(39,150,75,.50) 100%) !important;
+  transform: none !important;
+  writing-mode: horizontal-tb !important;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box !important;
+}
+
+img, svg, canvas, video, iframe {
+  max-width: 100% !important;
+}
+
+.app-shell, .page-shell, .app, #root, body > div:first-child {
+  width: min(100%, 1360px) !important;
+  max-width: 100vw !important;
+  min-width: 0 !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  border: 12px solid var(--timber-green) !important;
+  background: linear-gradient(180deg, rgba(33,93,54,.48) 0%, rgba(39,150,75,.42) 48%, rgba(39,150,75,.34) 100%) !important;
+  overflow-x: hidden !important;
+  transform: none !important;
+}
+
+main, .app-main, .screen, .screen.active, .screen.calmScreen {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  overflow-x: hidden !important;
+  background: linear-gradient(180deg, rgba(39,150,75,.56) 0%, rgba(39,150,75,.44) 54%, rgba(39,150,75,.34) 100%) !important;
+  transform: none !important;
+}
+
+.screen .card,
+.screen section.card,
+.screen article.card,
+.screen .hero,
+.screen .calmHero,
+.screen details.card,
+.screen .panel,
+.screen .appPanel,
+.screen .homeCard,
+.screen .softGreen,
+.screen .metric,
+.screen .toolbar,
+.screen .deletePanel,
+.screen .list-card,
+.screen .dog-card,
+.screen .park-card,
+.screen .report-card,
+.screen .resultCard,
+.screen .quietPanel,
+.screen .summary,
+.screen .note,
+.screen .empty,
+.screen .statusLine,
+.screen .answer:not(.green):not(.yellow):not(.amber):not(.red):not(.black),
+.screen .todayAnswer:not(.green):not(.yellow):not(.amber):not(.red):not(.black),
+.screen .signal:not(.green):not(.yellow):not(.amber):not(.red):not(.black),
+.screen .councilEvidence,
+.screen .trademarkNotice,
+.screen .progressiveDogForm .formStep,
+.screen .config-row,
+.screen .launchItem,
+.screen .uploadedFileList,
+.screen .medicalSummary,
+.screen .auditPill,
+.screen .ownerDutyTimer,
+.screen .unattendedReport,
+.screen .supervisionRequired,
+.screen .mobileHint {
+  background: linear-gradient(180deg, var(--field-green-dark-visible) 0%, var(--field-green-visible) 48%, var(--field-green-soft-visible) 100%) !important;
+  border-color: rgba(4,45,27,.56) !important;
+  box-shadow: 0 10px 26px rgba(4,45,27,.13) !important;
+  color: #062f1c !important;
+}
+
+.screen input:not([type="checkbox"]):not([type="radio"]),
+.screen select,
+.screen textarea,
+.screen label,
+.screen summary,
+.screen details > summary,
+.screen .toggle,
+.screen .chip,
+.screen .moduleBadge,
+.screen .meta,
+.screen .chips,
+.screen .parkMeta,
+.screen .parkAmenities,
+.screen .parkWarnings,
+.screen .searchField,
+.screen .field,
+.screen .selectField,
+.screen .questionBox,
+.screen .searchPanel,
+.screen .searchResults,
+.screen .auditRow,
+.screen .logRow,
+.screen .toolbar button,
+.screen button.secondary,
+.screen .secondary,
+.screen .quietLinkButton,
+.screen .resetButton,
+.screen .smallBtn,
+.screen .miniBtn,
+.screen .ghostButton {
+  background: linear-gradient(180deg, rgba(39,150,75,.94) 0%, rgba(39,150,75,.76) 55%, rgba(39,150,75,.56) 100%) !important;
+  border-color: rgba(4,45,27,.54) !important;
+  color: #062f1c !important;
+}
+
+#calmQuickStatusCard,
+#home .card:has(#quickDogSelect),
+#home .card:has(#quickStatusResult) {
+  background: linear-gradient(180deg, rgba(39,150,75,1) 0%, rgba(39,150,75,.84) 48%, rgba(39,150,75,.64) 100%) !important;
+  border-left: 12px solid var(--timber-green) !important;
+  border-color: rgba(4,45,27,.68) !important;
+}
+
+#home .card,
+#dogs .card,
+#parks .card,
+#checkin .card,
+#ownerDuty .card,
+#suitability .card,
+#emergency .card,
+#settings .card,
+#more .card,
+#launchChecklist .card,
+#uploadedFiles .card,
+#home #todayAnswer:not(.green):not(.yellow):not(.amber):not(.red):not(.black),
+#home #activeInteractionsList > *,
+#home #recentChangesList > *,
+#dogs #dogsList > *,
+#dogs #activeDogsList > *,
+#dogs #interactionRulesList > *,
+#parks #parkResults > *,
+#parks #askAnswer,
+#checkin #checkedInDogsList > *,
+#checkin #bestMateStatusList > *,
+#checkin #checkInAuditList > *,
+#emergency #emergencySummary,
+#emergency #vetLinks > *,
+#emergency #aloneTimerStatus,
+#emergency #emergencyAudit > * {
+  background: linear-gradient(180deg, rgba(39,150,75,1) 0%, rgba(39,150,75,.80) 56%, rgba(39,150,75,.60) 100%) !important;
+}
+
+.topbar, header, .brandbar, .appHeader {
+  background:
+    radial-gradient(circle at 10% 0%, rgba(39,150,75,.42), transparent 22rem),
+    linear-gradient(135deg, var(--timber-green), #062719 72%) !important;
+  border-bottom: 5px solid var(--timber-green) !important;
+}
+
+.tabs, .calmTopTabs, .mobileQuickActions, .simpleToggleGrid, .grid, .grid.two, .formGrid, .buttonGrid {
+  max-width: 100% !important;
+  min-width: 0 !important;
+  overflow-x: auto !important;
+}
+
+@media (max-width: 760px) {
+  .app-shell, .page-shell, .app, #root, body > div:first-child {
+    border-width: 7px !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+  }
+  main, .screen, .card, details.card, .hero, section.card {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+  .grid, .grid.two, .formGrid, .buttonGrid, .simpleToggleGrid {
+    grid-template-columns: 1fr !important;
+  }
+  .tabs, .calmTopTabs {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+  .tabs button, .calmTopTabs button {
+    flex: 0 0 auto !important;
+    min-width: max-content !important;
+  }
+}
+
+.green, .todayAnswer.green, .result.green, .signal.green, .launchItem.green {
+  background: #00a651 !important; color: #ffffff !important; border-color: #006b35 !important;
+}
+.yellow, .todayAnswer.yellow, .result.yellow, .signal.yellow, .launchItem.yellow {
+  background: #ffe100 !important; color: #111111 !important; border-color: #b39b00 !important;
+}
+.amber, .todayAnswer.amber, .result.amber, .signal.amber, .launchItem.amber {
+  background: #ff9500 !important; color: #111111 !important; border-color: #a84e00 !important;
+}
+.red, .todayAnswer.red, .result.red, .signal.red, .launchItem.red {
+  background: #f10b0b !important; color: #ffffff !important; border-color: #970000 !important;
+}
+.black, .todayAnswer.black, .result.black, .signal.black, .launchItem.black {
+  background: #000000 !important; color: #ffffff !important; border-color: #000000 !important;
+}
+
+
+
+/* GENEVIEVE_SOFT_FADE_UI_KIT_FINAL
+   Built from approved visual preview:
+   - Timber Green outer frame.
+   - Elf Green page background fading softly.
+   - Field Green panels fading softly, NOT solid.
+   - Clear readable cards and fields.
+   - White is allowed only as the soft fade endpoint/glow, never a harsh flat panel.
+   - Official alert colours preserved.
+*/
+
+:root {
+  --timber-green: #103f31;
+  --elf-green: #215d36;
+  --elf-green-soft: rgba(33,93,54,.18);
+  --field-green: #27964b;
+  --field-green-panel-top: rgba(39,150,75,.22);
+  --field-green-panel-mid: rgba(39,150,75,.12);
+  --field-green-panel-end: rgba(248,255,250,.94);
+  --soft-cream-green: #f5fff7;
+  --text-deep-green: #062f1c;
+}
+
+html {
+  background: var(--timber-green) !important;
+  overflow-x: hidden !important;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  max-width: 100vw !important;
+  min-width: 0 !important;
+  overflow-x: hidden !important;
+  color: var(--text-deep-green) !important;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(39,150,75,.38), transparent 30rem),
+    linear-gradient(180deg,
+      rgba(16,63,49,1) 0%,
+      rgba(33,93,54,.84) 28%,
+      rgba(39,150,75,.48) 74%,
+      rgba(39,150,75,.32) 100%) !important;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box !important;
+}
+
+img, svg, canvas, video, iframe {
+  max-width: 100% !important;
+}
+
+.app-shell,
+.page-shell,
+.app,
+#root,
+body > div:first-child {
+  width: min(100%, 1360px) !important;
+  max-width: 100vw !important;
+  min-width: 0 !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  border: 12px solid var(--timber-green) !important;
+  border-radius: 34px !important;
+  overflow-x: hidden !important;
+  background:
+    radial-gradient(circle at 8% 0%, rgba(255,255,255,.30), transparent 28rem),
+    linear-gradient(180deg,
+      rgba(232,250,236,.96) 0%,
+      rgba(224,247,230,.88) 42%,
+      rgba(215,242,222,.78) 100%) !important;
+}
+
+main,
+.app-main,
+.screen,
+.screen.active,
+.screen.calmScreen {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  overflow-x: hidden !important;
+  background:
+    radial-gradient(circle at 12% 4%, rgba(255,255,255,.48), transparent 24rem),
+    linear-gradient(180deg,
+      rgba(236,252,240,.92) 0%,
+      rgba(226,247,232,.72) 50%,
+      rgba(39,150,75,.16) 100%) !important;
+}
+
+/* Soft Field Green cards and panels */
+.screen .card,
+.screen section.card,
+.screen article.card,
+.screen .hero,
+.screen .calmHero,
+.screen details.card,
+.screen .panel,
+.screen .appPanel,
+.screen .homeCard,
+.screen .softGreen,
+.screen .metric,
+.screen .toolbar,
+.screen .deletePanel,
+.screen .list-card,
+.screen .dog-card,
+.screen .park-card,
+.screen .report-card,
+.screen .resultCard,
+.screen .quietPanel,
+.screen .summary,
+.screen .note,
+.screen .empty,
+.screen .statusLine,
+.screen .answer:not(.green):not(.yellow):not(.amber):not(.red):not(.black),
+.screen .todayAnswer:not(.green):not(.yellow):not(.amber):not(.red):not(.black),
+.screen .signal:not(.green):not(.yellow):not(.amber):not(.red):not(.black),
+.screen .councilEvidence,
+.screen .trademarkNotice,
+.screen .progressiveDogForm .formStep,
+.screen .config-row,
+.screen .launchItem,
+.screen .uploadedFileList,
+.screen .medicalSummary,
+.screen .auditPill,
+.screen .ownerDutyTimer,
+.screen .unattendedReport,
+.screen .supervisionRequired,
+.screen .mobileHint {
+  background:
+    linear-gradient(180deg,
+      rgba(39,150,75,.24) 0%,
+      rgba(39,150,75,.12) 42%,
+      rgba(248,255,250,.92) 100%) !important;
+  border: 1.5px solid rgba(16,63,49,.18) !important;
+  box-shadow: 0 10px 28px rgba(16,63,49,.08) !important;
+  color: var(--text-deep-green) !important;
+}
+
+/* Soft field green controls/fields */
+.screen input:not([type="checkbox"]):not([type="radio"]),
+.screen select,
+.screen textarea,
+.screen label,
+.screen summary,
+.screen details > summary,
+.screen .toggle,
+.screen .chip,
+.screen .moduleBadge,
+.screen .meta,
+.screen .chips,
+.screen .parkMeta,
+.screen .parkAmenities,
+.screen .parkWarnings,
+.screen .searchField,
+.screen .field,
+.screen .selectField,
+.screen .questionBox,
+.screen .searchPanel,
+.screen .searchResults,
+.screen .auditRow,
+.screen .logRow,
+.screen .toolbar button,
+.screen button.secondary,
+.screen .secondary,
+.screen .quietLinkButton,
+.screen .resetButton,
+.screen .smallBtn,
+.screen .miniBtn,
+.screen .ghostButton {
+  background:
+    linear-gradient(180deg,
+      rgba(39,150,75,.20) 0%,
+      rgba(39,150,75,.10) 50%,
+      rgba(250,255,251,.94) 100%) !important;
+  border-color: rgba(16,63,49,.20) !important;
+  color: var(--text-deep-green) !important;
+}
+
+/* Front-page quick panel: visible green, but faded out, not solid */
+#calmQuickStatusCard,
+#home .card:has(#quickDogSelect),
+#home .card:has(#quickStatusResult) {
+  background:
+    linear-gradient(180deg,
+      rgba(39,150,75,.34) 0%,
+      rgba(39,150,75,.18) 45%,
+      rgba(248,255,250,.92) 100%) !important;
+  border-left: 10px solid var(--timber-green) !important;
+  border-color: rgba(16,63,49,.28) !important;
+}
+
+/* Named card groups from approved mockup */
+#home .card,
+#dogs .card,
+#parks .card,
+#checkin .card,
+#ownerDuty .card,
+#suitability .card,
+#emergency .card,
+#settings .card,
+#more .card,
+#launchChecklist .card,
+#uploadedFiles .card,
+#home #todayAnswer:not(.green):not(.yellow):not(.amber):not(.red):not(.black),
+#home #activeInteractionsList > *,
+#home #recentChangesList > *,
+#dogs #dogsList > *,
+#dogs #activeDogsList > *,
+#dogs #interactionRulesList > *,
+#parks #parkResults > *,
+#parks #askAnswer,
+#checkin #checkedInDogsList > *,
+#checkin #bestMateStatusList > *,
+#checkin #checkInAuditList > *,
+#emergency #emergencySummary,
+#emergency #vetLinks > *,
+#emergency #aloneTimerStatus,
+#emergency #emergencyAudit > * {
+  background:
+    linear-gradient(180deg,
+      rgba(39,150,75,.26) 0%,
+      rgba(39,150,75,.12) 48%,
+      rgba(249,255,250,.94) 100%) !important;
+}
+
+/* Header/frame */
+.topbar,
+header,
+.brandbar,
+.appHeader {
+  background:
+    radial-gradient(circle at 12% 0%, rgba(39,150,75,.36), transparent 22rem),
+    linear-gradient(135deg, var(--timber-green), #062719 78%) !important;
+  border-bottom: 5px solid var(--timber-green) !important;
+  color: #ffffff !important;
+}
+
+.topbar h1,
+.topbar p,
+header h1,
+header p {
+  color: #ffffff !important;
+}
+
+/* Nav can stay soft and readable */
+.tabs,
+.calmTopTabs {
+  background:
+    linear-gradient(180deg, rgba(248,255,250,.94), rgba(226,247,232,.86)) !important;
+  border-color: rgba(16,63,49,.16) !important;
+}
+
+.tabs button,
+.calmTopTabs button {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.88), rgba(39,150,75,.10)) !important;
+  color: #062f1c !important;
+}
+
+.tabs button.active,
+.calmTopTabs button.active {
+  background: var(--timber-green) !important;
+  color: #ffffff !important;
+}
+
+/* Mobile anti-flip / stable phone layout */
+.tabs,
+.calmTopTabs,
+.mobileQuickActions,
+.simpleToggleGrid,
+.grid,
+.grid.two,
+.formGrid,
+.buttonGrid {
+  max-width: 100% !important;
+  min-width: 0 !important;
+  overflow-x: auto !important;
+}
+
+@media (max-width: 760px) {
+  .app-shell,
+  .page-shell,
+  .app,
+  #root,
+  body > div:first-child {
+    border-width: 7px !important;
+    border-radius: 22px !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+  }
+
+  main,
+  .screen,
+  .card,
+  details.card,
+  .hero,
+  section.card {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .grid,
+  .grid.two,
+  .formGrid,
+  .buttonGrid,
+  .simpleToggleGrid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .tabs,
+  .calmTopTabs {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .tabs button,
+  .calmTopTabs button {
+    flex: 0 0 auto !important;
+    min-width: max-content !important;
+  }
+}
+
+/* Preserve official Genevieve traffic-light/severity colours */
+.green,
+.todayAnswer.green,
+.result.green,
+.signal.green,
+.launchItem.green {
+  background: #00a651 !important;
+  color: #ffffff !important;
+  border-color: #006b35 !important;
+}
+.yellow,
+.todayAnswer.yellow,
+.result.yellow,
+.signal.yellow,
+.launchItem.yellow {
+  background: #ffe100 !important;
+  color: #111111 !important;
+  border-color: #b39b00 !important;
+}
+.amber,
+.todayAnswer.amber,
+.result.amber,
+.signal.amber,
+.launchItem.amber {
+  background: #ff9500 !important;
+  color: #111111 !important;
+  border-color: #a84e00 !important;
+}
+.red,
+.todayAnswer.red,
+.result.red,
+.signal.red,
+.launchItem.red {
+  background: #f10b0b !important;
+  color: #ffffff !important;
+  border-color: #970000 !important;
+}
+.black,
+.todayAnswer.black,
+.result.black,
+.signal.black,
+.launchItem.black {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border-color: #000000 !important;
+}

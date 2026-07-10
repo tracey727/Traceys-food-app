@@ -1,0 +1,9 @@
+{
+  "name": "GENEVIEVE App — Dog Park",
+  "short_name": "GENEVIEVE Dog Park",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#eaffef",
+  "theme_color": "#052d1d",
+  "icons": []
+}

@@ -1,0 +1,20 @@
+{
+  "index_html_at_root": true,
+  "styles_css_at_root": true,
+  "app_js_at_root": true,
+  "vercel_json_at_root": true,
+  "no_package_json": true,
+  "no_package_lock": true,
+  "no_node_modules": true,
+  "no_dist": true,
+  "html_references_styles": true,
+  "html_references_app": true,
+  "has_genevieve_tm": true,
+  "has_soft_fade_marker": true,
+  "has_timber_green": true,
+  "has_elf_green": true,
+  "has_field_green": true,
+  "has_mobile_fix": true,
+  "node_check_returncode": 0,
+  "node_error": ""
+}
