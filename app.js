@@ -2,14 +2,13 @@
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>[...r.querySelectorAll(s)];
 const KEY="genevieve_food_v19_live_phone";
-const BUILD="2026.07.28.19.4";
-const PRODUCT_PROXY="/api/product";
-const SEARCH_PROXY="/api/search";
+const BUILD="2026.07.29.19.5";
 const PRODUCT_API_V2="https://world.openfoodfacts.org/api/v2/product/";
 const PRODUCT_API_V0="https://world.openfoodfacts.org/api/v0/product/";
 const SEARCH_API="https://world.openfoodfacts.org/cgi/search.pl";
-const PRODUCT_CACHE_KEY="genevieve_food_v19_4_product_cache";
+const PRODUCT_CACHE_KEY="genevieve_food_v19_5_product_cache";
 const TESSERACT_CDN="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js";
+const QUAGGA_CDN="https://cdn.jsdelivr.net/npm/@ericblade/quagga2@1.12.1/dist/quagga.min.js";
 const BUILT_IN_PRODUCTS={
   "9300617433163":{
     code:"9300617433163",
@@ -67,6 +66,7 @@ let currentImageRotation=0;
 let currentStoredPhoto="";
 let barcodeReader=null;
 let tesseractLoadPromise=null;
+let quaggaLoadPromise=null;
 
 const REQUEST_TIMEOUT_MS=12000;
 const SCAN_TIMEOUT_MS=10000;
@@ -89,6 +89,20 @@ function ensureTesseract(){
     document.head.appendChild(script);
   }),15000,"Label reader download timed out").catch(error=>{tesseractLoadPromise=null;throw error});
   return tesseractLoadPromise;
+}
+function ensureQuagga(){
+  if(window.Quagga)return Promise.resolve(window.Quagga);
+  if(quaggaLoadPromise)return quaggaLoadPromise;
+  quaggaLoadPromise=withTimeout(new Promise((resolve,reject)=>{
+    const script=document.createElement("script");
+    script.src=QUAGGA_CDN;
+    script.async=true;
+    script.crossOrigin="anonymous";
+    script.onload=()=>window.Quagga?resolve(window.Quagga):reject(new Error("Second barcode reader did not initialise"));
+    script.onerror=()=>reject(new Error("Second barcode reader could not be downloaded"));
+    document.head.appendChild(script);
+  }),12000,"Second barcode reader download timed out").catch(error=>{quaggaLoadPromise=null;throw error});
+  return quaggaLoadPromise;
 }
 async function fetchJsonWithTimeout(url,ms=REQUEST_TIMEOUT_MS,options={}){
   const controller=new AbortController();
@@ -116,7 +130,6 @@ function cacheProduct(barcode,product){
   const newest=Object.entries(cache).sort((a,b)=>String(b[1]?.savedAt||"").localeCompare(String(a[1]?.savedAt||""))).slice(0,150);
   try{localStorage.setItem(PRODUCT_CACHE_KEY,JSON.stringify(Object.fromEntries(newest)))}catch(error){console.warn("Product cache unavailable",error)}
 }
-function canUseVercelFunctions(){return location.protocol==="https:"||location.protocol==="http:"}
 function productFields(){return "code,product_name,product_name_en,generic_name,generic_name_en,brands,quantity,categories,ingredients_text,ingredients_text_en,allergens,allergens_tags,traces,traces_tags,labels,labels_tags,labels_text,labels_text_en,image_front_small_url,image_front_url"}
 async function productAttempt(url,provider,credentials="omit"){
   const data=await fetchJsonWithTimeout(url,9000,{credentials});
@@ -332,6 +345,7 @@ async function handleImageFile(file){
     $("#barcodePreview").style.transform="rotate(0deg)";
     $("#photoWorkspace").classList.remove("hidden");
     $("#togglePhotoLoaded").checked=true;
+    ensureQuagga().catch(()=>null);
   }catch(e){
     console.error(e);
     setStatus("error","Photo could not be loaded","On Windows, use JPG or PNG if an iPhone HEIC photo cannot open.");
@@ -464,13 +478,50 @@ async function scanWithZXing(source){
   }
   return null;
 }
+async function scanWithQuagga(source){
+  let quagga=null;
+  try{quagga=await ensureQuagga()}catch(error){return null}
+  const src=source instanceof HTMLCanvasElement?source.toDataURL("image/jpeg",.94):(source?.src||"");
+  if(!src)return null;
+  const configurations=[
+    {locate:true,patchSize:"medium",halfSample:false,size:1600},
+    {locate:true,patchSize:"large",halfSample:true,size:1280}
+  ];
+  for(const option of configurations){
+    const value=await new Promise(resolve=>{
+      let settled=false;
+      const finish=result=>{if(settled)return;settled=true;resolve(result?.codeResult?.code||null)};
+      const timer=setTimeout(()=>finish(null),7000);
+      try{
+        quagga.decodeSingle({
+          src,
+          numOfWorkers:0,
+          locate:option.locate,
+          inputStream:{size:option.size,singleChannel:false},
+          locator:{patchSize:option.patchSize,halfSample:option.halfSample},
+          decoder:{readers:["ean_reader","ean_8_reader","upc_reader","upc_e_reader","code_128_reader"]}
+        },result=>{clearTimeout(timer);finish(result)});
+      }catch(error){clearTimeout(timer);finish(null)}
+    });
+    if(value)return value;
+  }
+  return null;
+}
 async function scanCanvas(canvas){
-  for(const candidate of barcodeScanCanvases(canvas)){
+  const candidates=barcodeScanCanvases(canvas);
+  for(const candidate of candidates){
     let code=null;
     try{code=await withTimeout(scanWithNativeBarcodeDetector(candidate),2500,"Native barcode scan timed out")}catch(e){}
     if(code)return code;
     try{code=await withTimeout(scanWithZXing(candidate),3500,"Barcode scan timed out")}catch(e){}
     if(code)return code;
+  }
+  setStatus("loading","Checking second barcode reader","Genevieve is using a second iPhone-compatible reader on the full photo and the closest barcode crop.");
+  for(const candidate of [candidates[0],candidates[1],candidates[4]].filter(Boolean)){
+    try{
+      const code=await withTimeout(scanWithQuagga(candidate),15000,"Second barcode scan timed out");
+      if(code)return code;
+    }catch(e){}
   }
   return null;
 }
@@ -496,11 +547,10 @@ async function resolveOcrBarcode(texts){
     const batch=validationPool.slice(index,index+4);
     const settled=await Promise.allSettled(batch.map(async code=>{
       const urls=[];
-      if(canUseVercelFunctions())urls.push(`${PRODUCT_PROXY}?barcode=${encodeURIComponent(code)}`);
       urls.push(`${PRODUCT_API_V2}${encodeURIComponent(code)}.json?fields=code,product_name,brands`);
       for(const url of urls){
         try{
-          const data=await fetchJsonWithTimeout(url,4500,{credentials:url.startsWith(PRODUCT_PROXY)?"same-origin":"omit"});
+          const data=await fetchJsonWithTimeout(url,4500,{credentials:"omit"});
           if((data?.ok&&data?.status===1&&data?.product)||(data?.status===1&&data?.product))return code;
         }catch(e){}
       }
@@ -673,7 +723,6 @@ async function lookupBarcode(code,saveScan=true){
   if(BUILT_IN_PRODUCTS[code]){
     attempts.push(Promise.resolve({kind:"found",provider:"built-in photographed-label reference",product:BUILT_IN_PRODUCTS[code]}));
   }else{
-    if(canUseVercelFunctions())attempts.push(productAttempt(`${PRODUCT_PROXY}?barcode=${encodeURIComponent(code)}`,"GENEVIEVE Vercel product service","same-origin"));
     attempts.push(productAttempt(`${PRODUCT_API_V2}${encodeURIComponent(code)}.json?fields=${encodeURIComponent(fields)}`,"Open Food Facts direct","omit"));
     attempts.push(productAttempt(`${PRODUCT_API_V0}${encodeURIComponent(code)}.json`,"Open Food Facts backup","omit"));
   }
@@ -759,7 +808,6 @@ async function searchByName(){
   if(!q)return alert("Enter a product name only if barcode scanning was not possible.");
   setStatus("loading","Searching products",q);
   const urls=[];
-  if(canUseVercelFunctions())urls.push({url:`${SEARCH_PROXY}?q=${encodeURIComponent(q)}`,credentials:"same-origin"});
   urls.push({url:SEARCH_API+"?search_terms="+encodeURIComponent(q)+"&search_simple=1&action=process&json=1&page_size=12",credentials:"omit"});
   const settled=await Promise.allSettled(urls.map(item=>fetchJsonWithTimeout(item.url,9000,{credentials:item.credentials})));
   const successful=settled.filter(item=>item.status==="fulfilled").map(item=>item.value);
@@ -1025,10 +1073,15 @@ window.addEventListener("unhandledrejection",e=>{
 });
 
 document.addEventListener("DOMContentLoaded",()=>{
+  if("serviceWorker" in navigator){
+    navigator.serviceWorker.getRegistrations().then(registrations=>Promise.all(registrations.map(registration=>registration.unregister()))).catch(()=>null);
+  }
+  if("caches" in window){
+    caches.keys().then(keys=>Promise.all(keys.filter(key=>key.startsWith("genevieve-food-")).map(key=>caches.delete(key)))).catch(()=>null);
+  }
   load();render();
   window.GENEVIEVE_FOOD_BUILD=BUILD;
   finishStatus("success","Ready","Take a barcode photo or upload one. Tracey does not need to type the product information.");
-  if("serviceWorker" in navigator&&canUseVercelFunctions())navigator.serviceWorker.register("./sw.js?v=19.4.0").catch(error=>console.warn("Service worker not available",error));
   $("#cameraBarcodePhoto").onchange=e=>handleImageFile(e.target.files[0]);
   $("#uploadBarcodePhoto").onchange=e=>handleImageFile(e.target.files[0]);
   $("#scanUploadedPhoto").onclick=scanCurrentPhoto;

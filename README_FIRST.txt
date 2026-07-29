@@ -1,29 +1,37 @@
-GENEVIEVE App™ FOOD V19.4 — START HERE
-======================================
+GENEVIEVE App™ FOOD V19.5 — STATIC DEPLOYMENT REPAIR
+====================================================
 
-THIS VERSION FIXES THE VERCEL ERROR:
-"Error: The pattern api/product.mjs ... does not match any Serverless Functions"
+THIS BUILD REMOVES THE VERCEL BUILD THAT WAS HANGING.
+There is no api folder, no server function, no package install, and no build command.
+Vercel only has to publish the HTML, CSS and JavaScript files.
 
-WHAT TO UPLOAD
+UPLOAD
 1. Extract this ZIP.
-2. Open the extracted folder.
-3. Upload every item INSIDE it to the ROOT of the Food App GitHub repository.
-4. At the top level of GitHub you must see index.html, app.js, vercel.json and the api folder.
-5. Inside api you must see product.mjs and search.mjs.
+2. Upload every item inside it to the ROOT of the Food App repository.
+3. Replace the older files when asked.
+4. Do not upload the ZIP itself into the repository.
+5. Do not place the files inside an extra V19.5 folder.
 
-DO NOT
-- Put all files inside another V19.4 folder in GitHub.
-- Add these files to the Dog Park repository.
-- set a Vercel Output Directory.
-- add a Build Command.
+THE ROOT MUST SHOW
+- index.html
+- app.js
+- styles.css
+- vercel.json
+- manifest.webmanifest
+- assets folder
 
-VERCEL SETTINGS
+IT MUST NOT SHOW
+- an api folder from an older version
+- package.json
+- sw.js
+
+VERCEL
 - Framework Preset: Other
-- Root Directory: leave blank unless this repository intentionally stores the app in a subfolder
-- Build Command: leave blank
-- Output Directory: leave blank
-- Install Command: leave blank
+- The included vercel.json forces no build, no install, and output from the repository root.
+- A completed deployment should show V19.5 in the app header.
 
-After deployment open:
-/api/product?barcode=4901515129889
-It should show JSON beginning with {"ok":true.
+SCANNER
+- Local ZXing scanner remains bundled.
+- Native BarcodeDetector is used where the browser supports it.
+- Quagga2 is loaded only as a second fallback after the local reader cannot decode a difficult photo.
+- The photographed Kikkoman barcode 4901515129889 remains a regression test.
