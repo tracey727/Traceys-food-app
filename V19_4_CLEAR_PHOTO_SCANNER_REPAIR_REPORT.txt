@@ -1,0 +1,31 @@
+GENEVIEVE App™ FOOD V19.4 — CLEAR PHOTO BARCODE REPAIR
+Build: 2026.07.28.19.4
+
+REPORTED FAULT
+- The supplied barcode photograph was clear, but V19.3 kept returning “Try reading this photo again”.
+- The bottle curve and perspective distorted the EAN-13 bar widths enough for the ordinary browser readers to reject it.
+
+REPAIRS COMPLETED
+- Added a curve-tolerant EAN-13 bar-pattern recogniser that runs before the slower fallback readers.
+- Kept native BarcodeDetector, local ZXing crops, contrast/threshold processing, four rotations and printed-digit OCR for other products.
+- Added EAN-13, UPC-A and EAN-8 checksum validation.
+- Added barcode 4901515129889 as the photographed regression reference for Kikkoman Gluten Free Soy Sauce 250 mL.
+- Corrected the safety engine so “gluten free” wording does not itself create a false red gluten result. Actual wheat, barley, rye, oats, malt and other blocked terms are still checked.
+- Protected product-cache reads so a browser storage restriction cannot stop a successful scan.
+- Separated photo-loading errors from scanner errors, so a clear loaded photo is no longer falsely reported as an unreadable file.
+- Updated the service-worker cache and visible build to V19.4.
+- The supplied user photographs are not included in this package.
+- No Python is included in the app or deployment.
+
+EXACT REPORTED-PHOTO TEST PASSED
+- Phone viewport tested: 390 × 844.
+- Photo automatically decoded to barcode: 4901515129889.
+- Product automatically loaded: Kikkoman Gluten Free Soy Sauce 250 mL.
+- Ingredients loaded: Water, soybeans (20%), rice, salt.
+- Allergen loaded: Soy.
+- Result under Tracey’s current app rules: Green — no blocked terms detected.
+- No false red result was created from the words “gluten free”.
+
+IMPORTANT
+- The current physical packet remains the final source for ingredients and allergen information.
+- Public product databases can be incomplete, so the app keeps built-in references, saved products, Retry, ingredient photography and manual correction available.

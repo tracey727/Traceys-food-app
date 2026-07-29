@@ -1,0 +1,54 @@
+GENEVIEVE App™ FOOD V19.4 — GITHUB + VERCEL DEPLOYMENT
+======================================================
+
+A. BEFORE UPLOADING
+-------------------
+1. Extract this ZIP.
+2. Open the extracted folder.
+3. Confirm index.html is directly inside it.
+4. Do not upload the ZIP itself as the website.
+5. Do not place all files inside an extra folder in GitHub.
+
+B. GITHUB
+---------
+Replace the old repository files with all files and folders from this package.
+The repository root must show:
+
+index.html
+app.js
+styles.css
+vercel.json
+manifest.webmanifest
+sw.js
+404.html
+api/
+assets/
+
+Commit the replacement.
+
+C. VERCEL
+---------
+Framework Preset: Other
+Root Directory: ./ or blank
+Install Command: blank
+Build Command: blank
+Output Directory: blank
+Environment Variables: none required
+
+Redeploy the latest GitHub commit.
+
+D. AFTER DEPLOYMENT
+-------------------
+1. Open the new Vercel deployment URL in a private/incognito tab first.
+2. Confirm the header says V19.4.
+3. Open Scan.
+4. Upload the clear Kikkoman bottle photograph used for the reported fault.
+5. Confirm barcode 4901515129889 is detected automatically.
+6. Confirm Kikkoman Gluten Free Soy Sauce 250 mL loads and “gluten free” does not create a false red result.
+7. Then test another fresh barcode photograph.
+
+If an old iPhone Home Screen copy still shows V19 or the old timeout, remove that old Home Screen icon, open the new Vercel URL in Safari, and add the new version again.
+
+E. COMPUTER TEST
+----------------
+Extract the ZIP and double-click index.html. The app should show Ready. No Python, local server, npm install or API key is required.

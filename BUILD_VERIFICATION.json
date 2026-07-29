@@ -1,0 +1,44 @@
+{
+  "build": "2026.07.28.19.4",
+  "interface": "approved original pink V19 layout",
+  "deployment": {
+    "github_root_ready": true,
+    "vercel_ready": true,
+    "local_index_ready": true,
+    "python_included": false
+  },
+  "verified": {
+    "javascript_syntax": true,
+    "json_parsing": true,
+    "local_file_references": true,
+    "duplicate_html_ids": false,
+    "missing_javascript_element_ids": false,
+    "dom_startup_ready": true,
+    "exact_reported_photo_automatic_decode": true,
+    "exact_reported_barcode": "4901515129889",
+    "exact_reported_product_loaded": true,
+    "phone_viewport_390x844": true,
+    "gluten_free_claim_not_false_red": true,
+    "soy_milk_not_false_dairy_red": true,
+    "cocoa_and_nut_butters_not_false_dairy_red": true,
+    "direct_dairy_red_with_reason_and_alternative": true,
+    "trace_dairy_amber": true,
+    "strict_coeliac_oats_red": true,
+    "seafood_rule_red": true,
+    "mushroom_rule_red": true,
+    "product_cache_restriction_does_not_stop_scan": true,
+    "product_function_mock_tests": true,
+    "search_function_mock_tests": true,
+    "storage_photo_quota_fallback_present": true,
+    "scanner_four_rotation_attempts_present": true
+  },
+  "external_limits": [
+    "Public barcode databases can be incomplete or temporarily unavailable.",
+    "A protected Vercel deployment URL must be replaced with or promoted to a public Production deployment for ordinary users.",
+    "The physical packet remains the final source for ingredients and allergen information."
+  ],
+  "vercelApiPatternRepair": true,
+  "functionsConfiguration": "automatic /api discovery; no functions glob overrides",
+  "scanner_repair": "curve-tolerant EAN bar-pattern recognition + native/ZXing crops + printed-digit OCR + checksum validation",
+  "regression_barcode": "4901515129889"
+}
