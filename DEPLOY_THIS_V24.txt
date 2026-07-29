@@ -1,0 +1,32 @@
+GENEVIEVE APP™ FOOD V24 FIXED — GITHUB + VERCEL
+
+UPLOAD
+1. Unzip this package on the computer.
+2. Replace the contents of the existing food-app GitHub repository with the CONTENTS of this folder.
+3. Do not upload the outer ZIP as one file.
+4. Commit the change.
+
+THE REPOSITORY ROOT MUST SHOW
+- index.html
+- app.js
+- logic.js
+- styles.css
+- package.json
+- build.mjs
+- vercel.json
+- manifest.webmanifest
+- service-worker.js
+- assets folder
+- legal folder
+
+VERCEL SETTINGS
+- Framework Preset: Other
+- Root Directory: blank
+- Build Command: npm run build
+- Output Directory: dist
+
+AFTER DEPLOYMENT
+1. Open the website in Safari rather than the old Home Screen icon.
+2. Refresh once.
+3. The top header must say V24 FIXED.
+4. If V18 LOCAL still appears, remove the old Home Screen icon, clear Safari website data for the old site if needed, reopen the Vercel address, then Add to Home Screen again.

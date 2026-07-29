@@ -1,202 +1,325 @@
 <!doctype html>
 <html lang="en-AU">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
-<meta name="theme-color" content="#c6007e">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="GENEVIEVE Food">
-<meta name="description" content="GENEVIEVE App Food V19.5 live barcode scanner, stock, recipes, shopping, learning and exports.">
-<title>GENEVIEVE App™ Food Stock Recipe Engine V19.5 Live Phone Scanner</title>
-<link rel="icon" href="./assets/genevieve-food-stock-icon.svg" type="image/svg+xml">
-<link rel="manifest" href="./manifest.webmanifest">
-<link rel="stylesheet" href="./styles.css?v=19.5.0">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#7a0050">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="GENEVIEVE Food">
+  <meta name="description" content="Private coeliac food scanner, pantry, recipes, shopping and food diary for personal use.">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+  <link rel="icon" href="assets/icons/icon-192.png">
+  <link rel="stylesheet" href="styles.css?v=24.0.0">
+  <title>GENEVIEVE App™ Food</title>
 </head>
 <body>
-<div class="app">
-<header class="topbar"><div class="brand"><img src="./assets/genevieve-food-stock-icon.svg" alt=""><div><h1>GENEVIEVE App™</h1><p>Live Phone Scanner • Stock • Recipes V19.5</p></div></div><button data-screen="alerts" class="bell">🔔<span id="alertDot"></span></button></header>
-<main>
+  <div id="offlineBanner" class="offline-banner" hidden>You are offline. Saved products and pantry still work; new barcode lookups need internet.</div>
 
-<div id="startupStatus" class="startup-status">
-  <b>Genevieve is starting…</b>
-  <span>The app will show Ready when the scanner and product lookup controls are available.</span>
-</div>
-
-<section class="screen active" id="home">
-<p class="kicker">Scan first • cook safer • learn your body</p>
-<section class="hero"><div><h2>Live Food Stock Recipe Engine V19.5</h2><p>Scan a product, get a green/amber/red light based on your needs, then add safe items to stock and create recipes from what you have.</p></div><div id="homeOrb" class="orb amber"><b>AMBER</b><span>Scan first</span></div></section>
-<section class="lights"><div class="green"><b>Green</b><span>Fits your rules + cleaner choice</span></div><div class="amber"><b>Amber</b><span>Check/trace/additives/uncertain</span></div><div class="red"><b>Red</b><span>Do not eat/use</span></div></section>
-<section class="card"><h3>Start here</h3><div class="actions"><button data-screen="scanner">Scan product</button><button data-screen="stock" class="secondary">Stock</button><button data-screen="recipes" class="secondary">Recipes</button></div></section>
-<section class="card"><h3>Dashboard</h3><div class="stats"><div><b id="statStock">0</b><span>stock</span></div><div><b id="statYellow">0</b><span>yellow</span></div><div><b id="statRed">0</b><span>red</span></div><div><b id="statLearn">0</b><span>learned</span></div></div></section>
-<section class="card teach"><h3>Healthy lifestyle teaching</h3><p id="dailyTip">Choose foods with shorter ingredient lists, clear gluten-free proof, and fewer additives/preservatives where possible.</p><button data-screen="learning" class="secondary">Open learning centre</button></section>
-</section>
-
-
-<section class="screen" id="scanner">
-<div class="title"><button data-screen="home">←</button><h2>Automatic Product Scanner</h2></div>
-
-<section class="card scan-priority">
-  <h3>1. Take or upload a barcode photo</h3>
-  <p class="hint"><b>You should not have to type the product information.</b> Genevieve will try to read the barcode, look up the product, and load the name, ingredients and allergen details automatically.</p>
-
-  <div class="scan-choice-grid">
-    <label class="scan-choice camera-choice">
-      <span class="scan-icon">📷</span>
-      <b>Take barcode photo</b>
-      <small>Use your phone camera</small>
-      <input id="cameraBarcodePhoto" type="file" accept="image/*" capture="environment">
-    </label>
-
-    <label class="scan-choice">
-      <span class="scan-icon">🖼️</span>
-      <b>Upload barcode photo</b>
-      <small>Choose an existing photo</small>
-      <input id="uploadBarcodePhoto" type="file" accept="image/*">
-    </label>
-  </div>
-
-  <div id="scannerStatus" class="scanner-status idle">
-    <b>Ready</b>
-    <span>Take or upload a clear photo of the barcode.</span>
-  </div>
-
-  <div id="photoWorkspace" class="photo-workspace hidden">
-    <img id="barcodePreview" alt="Uploaded barcode preview">
-    <div class="actions">
-      <button id="scanUploadedPhoto">Try reading this photo again</button>
-      <button id="rotatePhoto" class="secondary">Rotate photo</button>
-      <button id="deletePhoto" class="danger-secondary">Delete photo</button>
+  <header class="app-header">
+    <div class="brand-row">
+      <div class="brand-logo-frame" aria-label="GENEVIEVE App branding">
+        <img id="gaLogo" class="brand-logo" alt="GENEVIEVE App locked GA emblem" hidden>
+        <span id="brandFallback" class="brand-fallback">GENEVIEVE<br><b>App™</b></span>
+      </div>
+      <div class="brand-copy">
+        <strong>GENEVIEVE App™</strong>
+        <span>Food Safety • Photo Proof • Stock • Recipes V24 FIXED</span>
+      </div>
+      <button id="openQuickScan" class="header-scan" type="button" aria-label="Scan a product">Scan</button>
     </div>
-  </div>
-</section>
-
-<section class="card">
-  <h3>2. Automatic product load</h3>
-  <div class="auto-load-grid">
-    <div>
-      <span class="field-label">Detected barcode</span>
-      <div id="detectedBarcode" class="readout">Waiting for barcode</div>
+    <div id="treeBrandWrap" class="tree-brand-wrap" hidden>
+      <img id="treeLogo" alt="GENEVIEVE App locked tree and roots emblem">
     </div>
-    <div>
-      <span class="field-label">Product name</span>
-      <div id="detectedProductName" class="readout">Waiting for product</div>
-    </div>
-  </div>
+  </header>
 
-  <div class="actions">
-    <button id="reloadProduct" disabled>Reload product information</button>
-    <button id="deleteLoadedProduct" class="danger-secondary" disabled>Delete loaded result</button>
-  </div>
+  <main id="appMain">
+    <section id="screen-scan" class="screen active" data-title="Scan">
+      <article class="hero-card photo-first-hero">
+        <p class="eyebrow">START HERE — PHOTO FIRST</p>
+        <h1>Take the photos, then press one clear button.</h1>
+        <p>Genevieve previews every photo immediately, reads the barcode, loads the product name, and checks the ingredient and allergen information. Nothing is silently discarded.</p>
+        <div class="safety-strip"><span>COELIAC: STRICT</span><span>DIRECT DAIRY: BLOCKED</span><span>TRACE DAIRY: AMBER</span></div>
 
-  <details class="fallback">
-    <summary>Backup search options only</summary>
-    <p class="hint">Use these only if the photo scanner cannot read the barcode.</p>
-    <div class="grid">
-      <label>Type barcode<input id="barcode" inputmode="numeric" placeholder="Backup only"></label>
-      <label>Search product name<input id="scanName" placeholder="Backup only"></label>
-    </div>
-    <div class="actions">
-      <button id="lookupTypedBarcode">Load typed barcode</button>
-      <button id="searchProductName" class="secondary">Search product name</button>
-    </div>
-    <div id="nameSearchResults" class="list"></div>
-  </details>
-</section>
+        <div class="photo-grid" aria-label="Product photos">
+          <label class="photo-picker">
+            <b>1. Front label</b><small>Product name and gluten-free wording</small>
+            <input id="frontPhotoInput" type="file" accept="image/*" capture="environment">
+            <img id="frontPhotoPreview" alt="Front label preview" hidden>
+            <span id="frontPhotoState" class="photo-state">Take or choose photo</span>
+          </label>
+          <label class="photo-picker">
+            <b>2. Ingredients</b><small>Ingredient list and barcode</small>
+            <input id="ingredientsPhotoInput" type="file" accept="image/*" capture="environment">
+            <img id="ingredientsPhotoPreview" alt="Ingredients photo preview" hidden>
+            <span id="ingredientsPhotoState" class="photo-state">Take or choose photo</span>
+          </label>
+          <label class="photo-picker">
+            <b>3. Allergen panel</b><small>Contains / may contain information</small>
+            <input id="allergenPhotoInput" type="file" accept="image/*" capture="environment">
+            <img id="allergenPhotoPreview" alt="Allergen panel preview" hidden>
+            <span id="allergenPhotoState" class="photo-state">Take or choose photo</span>
+          </label>
+        </div>
 
-<section class="card">
-  <h3>3. Information Genevieve loaded</h3>
+        <button id="processPhotosBtn" class="action primary full photo-load-button" type="button">
+          <span class="action-icon">✓</span>
+          <span><b>READ ALL PHOTOS + LOAD PRODUCT</b><small>Loads the name, barcode and safety result</small></span>
+        </button>
+        <button id="clearUploadedPhotosBtn" class="action ghost full" type="button">Clear these photos and start again</button>
+        <div id="photoProcessStatus" class="photo-process-status" aria-live="polite">Waiting for your photos.</div>
+      </article>
 
-  <div class="loaded-flags">
-    <label class="toggle-row"><span>Product information loaded</span><input id="toggleProductLoaded" type="checkbox" disabled></label>
-    <label class="toggle-row"><span>Ingredients loaded</span><input id="toggleIngredientsLoaded" type="checkbox" disabled></label>
-    <label class="toggle-row"><span>Allergen statement loaded</span><input id="toggleAllergensLoaded" type="checkbox" disabled></label>
-    <label class="toggle-row"><span>Barcode photo attached</span><input id="togglePhotoLoaded" type="checkbox" disabled></label>
-  </div>
+      <article class="card alternate-scan-card">
+        <h2>Faster barcode options</h2>
+        <p class="muted">Use these when you only need the barcode. The result loads automatically.</p>
+        <div class="hero-actions">
+          <button id="startCameraBtn" class="action primary huge" type="button">
+            <span class="action-icon">▦</span>
+            <span><b>Start automatic scanner</b><small>Point at the barcode — no second button</small></span>
+          </button>
+          <label class="action secondary huge file-action">
+            <span class="action-icon">▦</span>
+            <span><b>Take barcode photo</b><small>Reads a clear still photo of the barcode</small></span>
+            <input id="barcodePhotoInput" type="file" accept="image/*" capture="environment">
+          </label>
+          <label class="action ghost huge file-action">
+            <span class="action-icon">▣</span>
+            <span><b>Photograph ingredients only</b><small>Use after a barcode/product has loaded</small></span>
+            <input id="labelPhotoInput" type="file" accept="image/*" capture="environment">
+          </label>
+        </div>
+        <details class="manual-panel">
+          <summary>Type the barcode instead</summary>
+          <form id="barcodeForm" class="inline-form">
+            <label>Barcode number<input id="barcodeInput" inputmode="numeric" autocomplete="off" placeholder="e.g. 4901515129889" required></label>
+            <button class="action primary" type="submit">Load this barcode</button>
+          </form>
+        </details>
+      </article>
 
-  <label>Ingredients and allergen information
-    <textarea id="labelText" placeholder="This should fill automatically after the barcode is read."></textarea>
-  </label>
+      <article id="scanStatusCard" class="card compact" aria-live="polite">
+        <div class="status-dot neutral"></div>
+        <div><b>Ready</b><p>Take the three photos above and press READ ALL PHOTOS + LOAD PRODUCT.</p></div>
+      </article>
 
-  <div class="proofs">
-    <label><input id="proofLabel" type="checkbox"> Current product label checked</label>
-    <label><input id="proofAllergen" type="checkbox"> Allergen information visible</label>
-    <label><input id="proofMine" type="checkbox" checked> This food is mine / okay to use</label>
-  </div>
+      <article id="photoScanCard" class="card photo-scan-card" hidden>
+        <h2>Barcode photo</h2>
+        <img id="barcodePhotoPreview" class="barcode-photo-preview" alt="Barcode photograph being scanned">
+        <p id="photoScanMessage">Preparing the photo…</p>
+        <div class="button-row">
+          <button id="rotateBarcodePhotoBtn" class="action secondary" type="button">Rotate photo</button>
+          <button id="retryBarcodePhotoBtn" class="action primary" type="button">Read barcode again</button>
+          <button id="closeBarcodePhotoBtn" class="action ghost" type="button">Close photo</button>
+        </div>
+      </article>
 
-  <div class="actions">
-    <button id="readLabelPhoto" class="secondary">Read label text from uploaded photo</button>
-    <label class="small-upload secondary-button">
-      Upload separate ingredients photo
-      <input id="ingredientsPhoto" type="file" accept="image/*" capture="environment">
-    </label>
-  </div>
-</section>
+      <article class="card quick-summary">
+        <h2>Today at a glance</h2>
+        <div class="summary-grid">
+          <button class="summary-tile" data-go="food"><b id="safeCount">0</b><span>saved foods</span></button>
+          <button class="summary-tile" data-go="food"><b id="lowCount">0</b><span>running low</span></button>
+          <button class="summary-tile" data-go="shop"><b id="shopCount">0</b><span>to buy</span></button>
+          <button class="summary-tile" data-go="more"><b id="diaryCount">0</b><span>diary notes</span></button>
+        </div>
+      </article>
+    </section>
 
-<section class="card">
-  <h3>4. Genevieve safety result</h3>
-  <div id="scanResult" class="result amber">
-    <b>Amber — waiting for product</b>
-    <span>Scan a barcode and Genevieve will load the product information.</span>
-  </div>
-  <div class="scores">
-    <div><b id="confidenceScore">0%</b><span>confidence</span></div>
-    <div><b id="cleanScore">0%</b><span>clean-food</span></div>
-    <div><b id="digestScore">0%</b><span>digestibility</span></div>
-  </div>
-  <button id="runScan" class="wide">Run safety check</button>
-  <button id="addScannedStock" class="wide secondary">Add loaded product to stock</button>
-</section>
+    <section id="screen-result" class="screen" data-title="Product result">
+      <button class="back-btn" type="button" data-go="scan">← Scan another product</button>
+      <article id="resultCard" class="result-card amber">
+        <div class="result-top">
+          <div id="resultLight" class="traffic-light amber" aria-hidden="true"></div>
+          <div>
+            <p id="resultLabel" class="result-label">NEEDS CHECKING</p>
+            <h1 id="resultName">Product result</h1>
+            <p id="resultBrand" class="muted"></p>
+            <p id="resultEvidence" class="evidence-source"></p>
+          </div>
+        </div>
+        <img id="resultImage" class="product-image" alt="" hidden>
+        <div id="resultAnswer" class="answer-box"></div>
+        <section class="explanation-card">
+          <h2 id="resultWhyHeading">Why this answer?</h2>
+          <ul id="resultReasons"></ul>
+        </section>
+        <section id="alternativeCard" class="alternative-card">
+          <p class="eyebrow">SAFER NEXT CHOICE</p>
+          <h2>Safe alternative</h2>
+          <ul id="resultAlternatives"></ul>
+          <button id="scanAlternativeBtn" class="action secondary full" type="button">Scan the alternative before buying</button>
+        </section>
+        <details class="evidence-panel" open>
+          <summary>Ingredients and label information used</summary>
+          <p id="resultIngredients" class="ingredient-copy">No ingredient list loaded.</p>
+        </details>
+        <div class="result-actions">
+          <button id="savePantryBtn" class="action primary" type="button">SAVE TO MY FOOD / STOCK</button>
+          <button id="saveHousemateBtn" class="action secondary" type="button" hidden>Save as housemate / not mine</button>
+          <button id="addShoppingBtn" class="action secondary" type="button">Add to shopping list</button>
+          <button id="correctProductBtn" class="action ghost" type="button">Show or hide product details</button>
+        </div>
+      </article>
 
-<section class="card">
-  <h3>Detected terms and teaching</h3>
-  <div id="scanFindings" class="list"><p>No scan yet.</p></div>
-</section>
+      <form id="correctionForm" class="card form-card update-card">
+        <p class="eyebrow">CHECK THE LOADED INFORMATION</p>
+        <h2>Product details loaded from your photos</h2>
+        <p>The name and barcode should be filled automatically. Correct anything the photo reader missed, then press the large button below.</p>
+        <label>Product name<input name="name" required autocomplete="off"></label>
+        <label>Brand<input name="brand" autocomplete="off"></label>
+        <label>Barcode / product code<input name="barcode" inputmode="numeric" autocomplete="off"></label>
+        <label>Ingredient list<textarea name="ingredients" rows="7"></textarea></label>
+        <label>Allergen statement<textarea name="allergens" rows="3" placeholder="e.g. contains soy"></textarea></label>
+        <label>May contain / traces statement<textarea name="traces" rows="3" placeholder="e.g. may contain milk"></textarea></label>
+        <label class="check-row"><input name="glutenFreeConfirmed" type="checkbox"><span>The current package clearly says <b>gluten-free</b> or coeliac suitable</span></label>
+        <label class="check-row confirm-row"><input name="manualLabelConfirmed" type="checkbox"><span>I checked these details against the <b>current physical label</b></span></label>
+        <button class="action primary full apply-details-button" type="submit">USE THESE UPDATED DETAILS + RE-CHECK SAFETY</button>
+        <button id="cancelCorrectionBtn" class="action ghost full" type="button">Hide details without changing them</button>
+      </form>
+    </section>
 
-<section class="card">
-  <h3>Saved scans</h3>
-  <p class="hint">Load an earlier product without scanning it again, or delete it completely.</p>
-  <div id="savedScanList" class="list"></div>
-</section>
-</section>
+    <section id="screen-food" class="screen" data-title="My food">
+      <div class="section-heading">
+        <div><p class="eyebrow">PANTRY & FRIDGE</p><h1>My food</h1><p>Tap minus when something is used. The shopping list updates automatically.</p></div>
+        <button class="action primary small" data-go="scan" type="button">+ Scan food</button>
+      </div>
+      <div class="filter-row">
+        <input id="foodSearch" type="search" placeholder="Search saved food">
+        <select id="foodFilter"><option value="all">All</option><option value="mine">My food only</option><option value="housemate">Housemate food</option><option value="green">Safe</option><option value="amber">Check</option><option value="red">Blocked</option><option value="low">Low stock</option></select>
+      </div>
+      <form id="foodEditForm" class="card form-card" hidden>
+        <h2>Edit saved food</h2>
+        <input name="id" type="hidden">
+        <label>Name<input name="name" required></label>
+        <label>Location<select name="location"><option>Pantry</option><option>Fridge</option><option>Freezer</option><option>Other</option></select></label>
+        <label>Quantity<input name="quantity" type="number" min="0" step="0.1" required></label>
+        <label>Unit<input name="unit" placeholder="item, packet, g, ml"></label>
+        <label>Low-stock warning at<input name="lowThreshold" type="number" min="0" step="0.1"></label>
+        <div class="button-row"><button class="action primary" type="submit">Save changes</button><button id="cancelFoodEditBtn" class="action ghost" type="button">Close</button></div>
+      </form>
+      <div id="foodList" class="card-list"></div>
+      <article id="emptyFood" class="empty-state"><b>No saved food yet.</b><p>Scan a product and tap “Save to my food”.</p><button class="action primary" data-go="scan">Scan first product</button></article>
+    </section>
 
-<section class="screen" id="stock">
-<div class="title"><button data-screen="home">←</button><h2>Pantry & Fridge Stock</h2></div>
-<section class="card"><h3>Add/update item</h3><div class="grid"><label>Item<input id="itemName"></label><label>Location<select id="itemLocation"><option>Fridge</option><option>Freezer</option><option>Pantry</option><option>Cupboard</option><option>Shared/Housemate</option></select></label><label>Quantity<input id="itemQty" type="number" min="0" step="0.1" value="1"></label><label>Unit<select id="itemUnit"><option>each</option><option>g</option><option>kg</option><option>ml</option><option>L</option><option>cups</option><option>serves</option></select></label><label>Yellow alert at<input id="itemYellow" type="number" min="0" step="0.1" value="2"></label><label>Red alert at<input id="itemRed" type="number" min="0" step="0.1" value="0.5"></label></div><label>Safety<select id="itemSafety"><option>Green — Tracey safe</option><option>Amber — check / trace / uncertain</option><option>Red — do not use</option><option>Housemate — not mine</option></select></label><label>Notes<textarea id="itemNotes"></textarea></label><button id="saveItem" class="wide">Save item</button></section>
-<section class="card"><h3>Current stock</h3><div class="filters"><button class="active" data-filter="all">All</button><button data-filter="Fridge">Fridge</button><button data-filter="Pantry">Pantry</button><button data-filter="amber">Yellow</button><button data-filter="red">Red</button></div><div id="stockList" class="list"></div></section>
-</section>
+    <section id="screen-meals" class="screen" data-title="Meals">
+      <div class="section-heading"><div><p class="eyebrow">USE WHAT YOU HAVE</p><h1>Meals</h1><p>Only recipes matching saved food and your strict safety settings are shown.</p></div></div>
+      <button id="generateMealsBtn" class="action primary full" type="button">Create meals from my pantry</button>
+      <div id="mealList" class="card-list"></div>
+      <article class="card planner-card">
+        <h2>Simple meal plan</h2>
+        <div id="mealPlanner" class="planner-grid"></div>
+        <button id="refreshPlanBtn" class="action secondary" type="button">Make a new plan</button>
+      </article>
+    </section>
 
-<section class="screen" id="recipes">
-<div class="title"><button data-screen="home">←</button><h2>Recipe Engine</h2></div>
-<section class="card"><h3>Create from what you have</h3><div class="grid"><label>Meal style<select id="recipeStyle"><option>Gluten free dairy free</option><option>Low additive / cleaner</option><option>Low irritation / gentle</option><option>Use leftovers</option><option>High protein</option></select></label><label>Servings<input id="recipeServings" type="number" min="1" value="2"></label></div><label>Notes<textarea id="recipeNotes" placeholder="Avoid honey mustard, gentle stomach, use chicken..."></textarea></label><button id="generateRecipe" class="wide">Generate recipe</button></section>
-<section class="card"><h3>Generated recipe</h3><div id="recipeOutput" class="recipe"><p>No recipe generated yet.</p></div><button id="deployRecipe" class="wide">Deploy recipe + lower stock</button><button id="saveRecipe" class="wide secondary">Save only</button></section>
-<section class="card"><h3>Saved recipes</h3><div id="recipeList" class="list"></div></section>
-</section>
+    <section id="screen-shop" class="screen" data-title="Shop">
+      <div class="section-heading"><div><p class="eyebrow">FORTNIGHTLY SHOP</p><h1>Shopping list</h1><p>Coles and Woolworths are compared. No delivery or bag costs are added.</p></div><button id="addShopItemBtn" class="action secondary small" type="button">+ Add item</button></div>
+      <div id="shoppingList" class="card-list"></div>
+      <article class="card totals-card">
+        <h2>Cheapest split</h2>
+        <div class="store-total"><span>Coles</span><b id="colesTotal">$0.00</b></div>
+        <div class="store-total"><span>Woolworths</span><b id="wooliesTotal">$0.00</b></div>
+        <div class="store-total grand"><span>Estimated total</span><b id="grandTotal">$0.00</b></div>
+        <p id="minimumSpendNote" class="notice"></p>
+      </article>
+      <form id="shopItemForm" class="card form-card" hidden>
+        <h2>Add shopping item</h2>
+        <label>Item<input name="name" required></label>
+        <label>Quantity<input name="quantity" type="number" min="1" step="1" value="1"></label>
+        <div class="button-row"><button class="action primary" type="submit">Add to list</button><button id="cancelShopItemBtn" class="action ghost" type="button">Close</button></div>
+      </form>
+    </section>
 
-<section class="screen" id="shopping">
-<div class="title"><button data-screen="home">←</button><h2>Shopping List</h2></div>
-<section class="card"><h3>Auto alerts: choose Add or Leave</h3><div id="autoShop" class="list"></div></section>
-<section class="card"><h3>Manual item</h3><div class="grid"><label>Item<input id="shopItem"></label><label>Reason<input id="shopReason"></label></div><button id="addShop" class="wide">Add to shopping</button></section>
-<section class="card"><h3>Chosen shopping list</h3><div id="shopList" class="list"></div><button id="exportShopping" class="wide secondary">Download shopping CSV</button></section>
-</section>
+    <section id="screen-more" class="screen" data-title="More">
+      <div class="section-heading"><div><p class="eyebrow">DIARY & CONTROL</p><h1>More</h1></div></div>
+      <article class="card">
+        <h2>Food reaction diary</h2>
+        <form id="diaryForm" class="stack-form">
+          <label>Food or meal<input name="food" required></label>
+          <label>How did you feel?<select name="reaction"><option>Good</option><option>Mild symptoms</option><option>Bad reaction</option></select></label>
+          <label>Notes<textarea name="notes" rows="3" placeholder="Symptoms, timing, ingredient concerns"></textarea></label>
+          <button class="action primary" type="submit">Save diary note</button>
+        </form>
+        <div id="patternNotice" class="pattern-box"></div>
+        <div id="diaryList" class="diary-list"></div>
+      </article>
 
-<section class="screen" id="learning">
-<div class="title"><button data-screen="home">←</button><h2>Learning Centre</h2></div>
-<section class="card"><h3>Terms Genevieve learned</h3><div id="learnedTerms" class="list"></div></section>
-<section class="card teach"><h3>Healthy lifestyle lessons</h3><ul><li>Shorter ingredient lists are often easier to review.</li><li>Gluten-free proof matters for coeliac safety.</li><li>Preservatives/additives are not automatically unsafe, but repeated reactions should be tracked.</li><li>Highly processed foods can be harder to digest for some people.</li><li>Bring repeated trigger patterns to your GP/dietitian.</li></ul></section>
-</section>
+      <article class="card settings-card">
+        <h2>My safety settings</h2>
+        <label class="locked-setting"><span><b>Strict coeliac safety</b><small>Always on</small></span><input type="checkbox" checked disabled></label>
+        <label class="locked-setting"><span><b>Direct dairy</b><small>Always blocked</small></span><input type="checkbox" disabled></label>
+        <label class="toggle-setting"><span><b>Trace dairy is acceptable</b><small>Still shown amber</small></span><input id="traceDairyToggle" type="checkbox" checked></label>
+        <label class="toggle-setting"><span><b>Warn about additives and preservatives</b><small>Health preference, not an allergy verdict</small></span><input id="additiveToggle" type="checkbox" checked></label>
+        <label class="toggle-setting"><span><b>Automatically reopen the scanner</b><small>Only after camera permission has already been granted</small></span><input id="autoScannerToggle" type="checkbox" checked></label>
+        <div class="notice"><b>Housemate separation:</b> Housemate food stays visible but is never used in your meal suggestions.</div>
+      </article>
 
-<section class="screen" id="alerts"><div class="title"><button data-screen="home">←</button><h2>Alerts</h2></div><section class="card"><h3>Current alerts</h3><div id="alertList" class="list"></div></section></section>
-<section class="screen" id="rules"><div class="title"><button data-screen="home">←</button><h2>Safety Rules</h2></div><section class="card"><h3>Your specifications</h3><label class="toggle">Strict coeliac blocker<input id="ruleGluten" type="checkbox" checked></label><label class="toggle">Direct dairy blocker<input id="ruleDairy" type="checkbox" checked></label><label class="toggle">Trace dairy = amber<input id="ruleTrace" type="checkbox" checked></label><label class="toggle">No seafood<input id="ruleSeafood" type="checkbox" checked></label><label class="toggle">No mushrooms<input id="ruleMushroom" type="checkbox" checked></label><label class="toggle">Housemate food blocked<input id="ruleHousemate" type="checkbox" checked></label><label class="toggle">Low additive/preservative preference<input id="ruleClean" type="checkbox" checked></label></section><section class="card"><h3>Watched terms</h3><div id="blockedTerms" class="chips"></div></section></section>
-<section class="screen" id="export"><div class="title"><button data-screen="home">←</button><h2>Export</h2></div><section class="card"><h3>Downloads</h3><div class="actions"><button id="exportStock">Stock CSV</button><button id="exportRecipes" class="secondary">Recipes CSV</button><button id="exportUsage" class="secondary">Usage CSV</button><button id="exportLearning" class="secondary">Learning CSV</button></div></section></section>
-</main>
-<nav class="bottom"><button class="active" data-screen="home">🏠<span>Home</span></button><button data-screen="scanner">📷<span>Scan</span></button><button data-screen="stock">🧺<span>Stock</span></button><button data-screen="recipes">🍲<span>Recipes</span></button><button data-screen="shopping">🛒<span>Shop</span></button><button data-screen="learning">🧠<span>Learn</span></button><button data-screen="alerts">🔔<span>Alerts</span></button><button data-screen="rules">⚙️<span>Rules</span></button><button data-screen="export">📄<span>Export</span></button></nav>
-</div>
+      <article class="card brand-tools-card">
+        <h2>Locked GENEVIEVE App™ logos</h2>
+        <p>The app first loads the locked logo files from <code>assets/brand</code>. These controls let you install the exact master images on this device without redrawing or changing them.</p>
+        <div class="brand-preview-row">
+          <div><b>GA app emblem</b><span id="gaAssetStatus">Checking for locked image…</span></div>
+          <label class="action secondary file-action">Choose exact GA image<input id="gaLogoInput" type="file" accept="image/png,image/jpeg,image/webp"></label>
+        </div>
+        <div class="brand-preview-row">
+          <div><b>Tree & roots emblem</b><span id="treeAssetStatus">Checking for locked image…</span></div>
+          <label class="action secondary file-action">Choose exact tree image<input id="treeLogoInput" type="file" accept="image/png,image/jpeg,image/webp"></label>
+        </div>
+        <button id="clearSavedLogosBtn" class="action ghost" type="button">Remove device copies only</button>
+      </article>
 
+      <article class="card backup-card">
+        <h2>Private backup and exports</h2>
+        <p>Your records stay in this browser unless you export them.</p>
+        <div class="button-row"><button id="exportBtn" class="action secondary" type="button">Export full backup</button><label class="action ghost file-action">Import backup<input id="importInput" type="file" accept="application/json"></label></div>
+        <div class="button-row export-row"><button id="exportFoodCsvBtn" class="action ghost" type="button">Food CSV</button><button id="exportShoppingCsvBtn" class="action ghost" type="button">Shopping CSV</button><button id="exportDiaryCsvBtn" class="action ghost" type="button">Diary CSV</button></div>
+      </article>
 
-<script defer src="./assets/vendor/zxing-browser.min.js?v=0.2.1"></script>
-<script defer src="./app.js?v=19.5.0"></script>
-</body></html>
+      <article class="card help-card">
+        <h2>How to use this app</h2>
+        <ol class="help-steps">
+          <li>Scan live, take a barcode photo, or type the barcode.</li>
+          <li>Read the green, amber or red reason. Correct missing label details when needed.</li>
+          <li>Save the product to My food or add it to Shopping.</li>
+          <li>Use plus/minus as stock changes. Low stock moves to Shopping automatically.</li>
+          <li>Create meals from saved food; cooking deducts stock.</li>
+          <li>Enter Coles and Woolworths prices to see the cheaper split.</li>
+          <li>Use More for diary notes, settings and backups.</li>
+        </ol>
+      </article>
+
+      <article class="card legal-card">
+        <h2>Important safety note</h2>
+        <p>This personal tool helps organise label information. Packaging can change. Always read the current label and follow advice from your treating health professionals. Amber means the app cannot confirm safety.</p>
+        <p><b>Build:</b> 2026.07.29.24.0 — photo loading, barcode, update button and soy-sauce safety repair.</p>
+      </article>
+    </section>
+  </main>
+
+  <nav class="bottom-nav" aria-label="Main navigation">
+    <button class="nav-btn active" data-go="scan"><span>▦</span>Scan</button>
+    <button class="nav-btn" data-go="food"><span>▤</span>My food</button>
+    <button class="nav-btn" data-go="meals"><span>⌂</span>Meals</button>
+    <button class="nav-btn" data-go="shop"><span>✓</span>Shop</button>
+    <button class="nav-btn" data-go="more"><span>•••</span>More</button>
+  </nav>
+
+  <dialog id="cameraDialog" class="camera-dialog">
+    <form method="dialog" class="dialog-head"><div><b>Automatic barcode scanner</b><small>No scan button is needed</small></div><button id="closeCameraBtn" aria-label="Close camera">×</button></form>
+    <div class="automatic-badge"><span></span> SCANNING AUTOMATICALLY</div>
+    <div class="camera-frame"><video id="cameraVideo" playsinline muted autoplay></video><div class="scan-guide"><i></i></div></div>
+    <p id="cameraMessage">Starting the back camera…</p>
+    <p class="camera-help">Hold the barcode steady inside the white box. The product loads as soon as it is recognised.</p>
+    <button id="cameraPhotoFallback" class="action secondary full" type="button">Take a barcode photo instead</button>
+    <button id="cameraLabelFallback" class="action ghost full" type="button">Photograph ingredients instead</button>
+  </dialog>
+
+  <div id="toast" class="toast" hidden></div>
+
+  <script src="assets/vendor/zxing-browser.min.js?v=0.2.1"></script>
+  <script src="logic.js?v=24.0.0"></script>
+  <script src="app.js?v=24.0.0"></script>
+</body>
+</html>

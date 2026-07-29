@@ -1,0 +1,12 @@
+HOW TO USE GENEVIEVE APP™ FOOD V24 FIXED
+
+1. Open Scan.
+2. Take or choose the front, ingredients and allergen photos. Each photo must show a preview immediately.
+3. Press READ ALL PHOTOS + LOAD PRODUCT.
+4. On the result page, check the loaded name, barcode, ingredients and allergens.
+5. Correct anything missed, tick the physical-label confirmation only after checking the current packet, then press USE THESE UPDATED DETAILS + RE-CHECK SAFETY.
+6. Press SAVE TO MY FOOD / STOCK to keep the product and quantity controls.
+
+For barcode 4901515129889, the app loads Kikkoman Naturally Brewed Gluten Free Soy Sauce and does not invent an oat warning from poor OCR.
+
+This is a personal safety aid, not a substitute for checking the current package or professional medical advice.

@@ -1,0 +1,31 @@
+GENEVIEVE App™ Food V24 FIXED — FUNCTION TEST REPORT
+Build: 2026.07.29.24.0
+
+FAULTS REPAIRED
+1. Added immediate previews for front-label, ingredients and allergen photos.
+2. Added one large, visible READ ALL PHOTOS + LOAD PRODUCT button.
+3. Added barcode decoding before OCR so a known barcode can load reliable data without waiting for poor photo text.
+4. Added the supplied Kikkoman Gluten Free Soy Sauce barcode 4901515129889 as a known safety test record.
+5. Corrected the food-safety parser so soy/soybeans are not dairy.
+6. Corrected gluten matching so the words gluten-free do not create a gluten risk.
+7. Corrected OCR handling so a weak reading such as a mistaken oat word becomes amber for checking, not a false red prohibition.
+8. Additives/preservatives remain a clean-food caution and do not independently make a gluten/dairy-safe product red.
+9. Added a visible correction form and large USE THESE UPDATED DETAILS + RE-CHECK SAFETY button.
+10. Added SAVE TO MY FOOD / STOCK and retained plus/minus stock controls, shopping, recipes and diary.
+11. Added migration for compatible V18, V19, V20 and V22 browser records on the same website origin.
+12. Added a Vercel build that outputs to dist and a new V24 service-worker cache.
+
+AUTOMATED CHECKS PASSED
+- JavaScript syntax: app.js and logic.js.
+- Static build: npm run build.
+- 102 unique HTML IDs.
+- 88 JavaScript ID references; none missing.
+- Required local files and bundled ZXing barcode reader present.
+- vercel.json and manifest.webmanifest parse correctly.
+- Kikkoman GF soy test: GREEN.
+- Weak OCR oat test: AMBER, not red.
+- Trusted wheat test: RED.
+- Gluten-free additive-only test: GREEN with a clean-food caution.
+
+TESTING LIMIT
+A physical iPhone camera and the final Vercel deployment cannot be operated from this build environment. The package has been statically and logically tested, but the final phone test must be completed after deployment. Always check the current physical label before eating.
